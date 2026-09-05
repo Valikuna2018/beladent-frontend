@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8080').replace(/\/$/, '');
 
 export function getAuthToken(): string | null {
   return localStorage.getItem('beladent_token');
@@ -105,6 +105,12 @@ export const publicApi = {
 
 // Admin API Requests
 export const adminApi = {
+  changePassword: (data: { currentPassword: string; newPassword: string }) =>
+    apiFetch<{ message: string }>('/api/admin/account/password', {
+      method: 'PUT',
+      body: data,
+    }),
+
   // Site Settings
   getSiteSettings: () => apiFetch<any>('/api/admin/site-settings'),
   updateSiteSettings: (data: FormData) => apiFetch<any>('/api/admin/site-settings', {

@@ -385,13 +385,13 @@ export const PublicView: React.FC<PublicViewProps> = ({
         .doctor-arrow { position: absolute; top: 50%; transform: translateY(-50%); color: var(--primary); background: white; border-color: rgba(14,116,144,.2); box-shadow: 0 8px 24px rgba(15,23,42,.13); }
         .doctor-arrow:hover { transform: translateY(-50%) scale(1.08); background: var(--primary); color: white; }
         .doctor-arrow.left { left: 0; } .doctor-arrow.right { right: 0; }
-        .doctor-card { overflow: hidden; padding: 0; display: flex; flex-direction: column; flex: 0 0 min(300px, 82vw); scroll-snap-align: start; }
-        .doctor-img-wrap { height: 280px; overflow: hidden; background: var(--primary-light); }
+        .doctor-card { overflow: hidden; padding: 0; display: flex; flex-direction: column; flex: 0 0 min(260px, 76vw); scroll-snap-align: start; }
+        .doctor-img-wrap { height: 230px; overflow: hidden; background: var(--primary-light); }
         .doctor-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
         .doctor-card:hover .doctor-img { transform: scale(1.04); }
         .doctor-fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 72px; }
-        .doctor-info { padding: 22px; display: flex; flex-direction: column; gap: 6px; }
-        .doctor-name { font-size: 1.15rem; color: var(--text-dark); }
+        .doctor-info { padding: 18px; display: flex; flex-direction: column; gap: 5px; }
+        .doctor-name { font-size: 1.05rem; color: var(--text-dark); }
         .doctor-tag { font-size: 0.78rem; font-family: var(--font-heading); font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: 0.06em; }
         .doctor-bio { font-size: 0.88rem; line-height: 1.5; color: var(--text-muted); margin-top: 4px; }
         .gallery-masonry { display: grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap: 18px; }
@@ -428,6 +428,10 @@ export const PublicView: React.FC<PublicViewProps> = ({
           .hero-arrow.left { left: 10px; } .hero-arrow.right { right: 10px; }
           .doctors-carousel { padding: 0 46px; }
           .doctor-arrow { width: 40px; height: 40px; }
+          .doctors-grid { gap: 16px; }
+          .doctor-card { flex-basis: min(220px, 70vw); }
+          .doctor-img-wrap { height: 190px; }
+          .doctor-info { padding: 14px; }
           .partners-section { padding-top:42px; padding-bottom:32px; }
           .partners-section + #doctors { padding-top:42px; }
           .partners-carousel { padding:0 46px; }

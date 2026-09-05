@@ -1,24 +1,45 @@
-import React from "react";
-import { ArrowLeft } from "lucide-react";
-import type { Language } from "../i18n/translations";
-import { getFullImageUrl } from "../services/api";
-import { RichTextContent } from "../components/RichText";
+import React, { useEffect } from 'react';
+import { ArrowLeft, Newspaper } from 'lucide-react';
+import type { Language } from '../i18n/translations';
+import { getFullImageUrl } from '../services/api';
+import { RichTextContent } from '../components/RichText';
 
 interface Props { currentLang: Language; newsId: string; news: any[]; onBack: () => void; }
 
 export const NewsDetailView: React.FC<Props> = ({ currentLang, newsId, news, onBack }) => {
   const item = news.find((entry) => String(entry.id) === newsId);
-  const title = item && (currentLang === "ka" ? item.titleKa : item.titleEn);
-  const bodyText = item && (currentLang === "ka" ? item.textKa : item.textEn);
-  const body = <RichTextContent html={bodyText} />;
+
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  if (!item) {
+    return <main className="news-detail-page"><button className="back-btn" onClick={onBack}><ArrowLeft size={20} />{currentLang === 'ka' ? 'უკან' : 'Back'}</button><h1>{currentLang === 'ka' ? 'სიახლე ვერ მოიძებნა' : 'News item not found'}</h1></main>;
+  }
+
+  const title = currentLang === 'ka' ? item.titleKa : item.titleEn;
+  const bodyText = currentLang === 'ka' ? item.textKa : item.textEn;
+
   return (
-    <main className="news-detail-page"><article className="news-article">
-      <button className="btn btn-secondary" onClick={onBack}><ArrowLeft size={18} />{currentLang === "ka" ? "სიახლეებზე დაბრუნება" : "Back to news"}</button>
-      {!item ? <h1>{currentLang === "ka" ? "სიახლე ვერ მოიძებნა" : "News item not found"}</h1> : <><h1>{title}</h1>{item.imageUrl && <img className="news-hero-image" src={getFullImageUrl(item.imageUrl)} alt={title} />}<div className="news-full-text">{body}</div></>}
-    </article><style>{`
-      .news-detail-page{min-height:80vh;padding:120px 24px 90px;background:var(--bg-color,#f8fafc)}.news-article{max-width:900px;margin:auto}.news-article h1{font-size:clamp(2rem,5vw,3.3rem);line-height:1.15;margin:36px 0 28px}
-      .news-hero-image{width:min(100%,680px);aspect-ratio:16/9;max-height:382px;margin:0 auto;object-fit:cover;object-position:center;display:block;border-radius:16px;box-shadow:0 14px 35px rgba(15,23,42,.12)}.news-full-text{white-space:pre-line;font-size:1.08rem;line-height:1.85;color:var(--text-dark);margin-top:36px}
-      @media(max-width:640px){.news-hero-image{width:100%;aspect-ratio:4/3;max-height:360px;border-radius:14px}}
-    `}</style></main>
+    <main className="news-detail-page animate-fade-in">
+      <div className="news-header-wrapper">
+        <button className="back-btn" onClick={onBack}><ArrowLeft size={20} />{currentLang === 'ka' ? 'უკან' : 'Back'}</button>
+      </div>
+      <article className="news-detail-card glass-panel">
+        <div className="news-profile-header">
+          <div className="news-image-compact">
+            {item.imageUrl ? <img src={getFullImageUrl(item.imageUrl)} alt={title} /> : <Newspaper size={60} />}
+          </div>
+          <div className="news-title-block">
+            <h1>{title}</h1>
+            <span className="news-accent" aria-hidden="true" />
+          </div>
+        </div>
+        <RichTextContent className="news-full-text" html={bodyText} />
+      </article>
+      <style>{`
+        .news-detail-page{min-height:100vh;padding:120px 24px 60px;max-width:900px;margin:0 auto}.news-header-wrapper{margin-bottom:24px}.back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid var(--card-border);padding:8px 16px;border-radius:8px;color:var(--text-dark);font-family:var(--font-heading);font-weight:500;cursor:pointer;transition:.2s}.back-btn:hover{background:rgba(255,255,255,.2);transform:translateX(-4px)}
+        .news-detail-card{padding:40px;border-radius:16px}.news-profile-header{display:flex;align-items:flex-start;gap:44px;flex-wrap:wrap;margin-bottom:42px}.news-image-compact{width:220px;height:220px;border-radius:20px;overflow:hidden;background:var(--input-bg);display:flex;align-items:center;justify-content:center;border:4px solid var(--primary-light);color:var(--primary);flex-shrink:0}.news-image-compact img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}.news-title-block{flex:1;min-width:240px;padding-top:6px}.news-title-block h1{font-family:var(--font-heading);font-size:clamp(2rem,5vw,3.2rem);color:var(--primary);margin:0;line-height:1.12;overflow-wrap:anywhere}.news-accent{display:block;width:42px;height:10px;margin-top:26px;border-radius:99px;background:var(--accent-cyan)}.news-full-text{font-size:1.1rem;line-height:1.8;color:var(--text-dark)}
+        @media(max-width:640px){.news-detail-card{padding:24px}.news-profile-header{gap:24px;margin-bottom:30px}.news-image-compact{width:170px;height:170px}.news-title-block{min-width:100%}}
+      `}</style>
+    </main>
   );
 };

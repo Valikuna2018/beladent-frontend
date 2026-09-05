@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Globe, User, LogOut, Settings } from 'lucide-react';
+import { Menu, X, Globe, User, LogOut, Settings, ChevronDown } from 'lucide-react';
 import type { Language } from '../i18n/translations';
 import { translations } from '../i18n/translations';
 import { getFullImageUrl } from '../services/api';
@@ -33,6 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileExpandedDropdown, setMobileExpandedDropdown] = useState<string | null>(null);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const t = translations[currentLang];
 
@@ -224,20 +225,28 @@ export const Navbar: React.FC<NavbarProps> = ({
               <React.Fragment key={item.id}>
                 {item.dropdown ? (
                   <div className="mobile-dropdown-wrapper">
-                    <div className="mobile-dropdown-header">
-                      {item.label}
-                    </div>
-                    <div className="mobile-dropdown-content">
-                      {item.dropdown.map(subItem => (
-                        <button
-                          key={subItem.id}
-                          onClick={() => handleNavClick(subItem.id)}
-                          className="mobile-sub-link-btn"
-                        >
-                          {subItem.label}
-                        </button>
-                      ))}
-                    </div>
+                    <button
+                      type="button"
+                      className="mobile-dropdown-header"
+                      onClick={() => setMobileExpandedDropdown(mobileExpandedDropdown === item.id ? null : item.id)}
+                      aria-expanded={mobileExpandedDropdown === item.id}
+                    >
+                      <span>{item.label}</span>
+                      <ChevronDown className={mobileExpandedDropdown === item.id ? 'expanded' : ''} size={21} />
+                    </button>
+                    {mobileExpandedDropdown === item.id && (
+                      <div className="mobile-dropdown-content">
+                        {item.dropdown.map(subItem => (
+                          <button
+                            key={subItem.id}
+                            onClick={() => handleNavClick(subItem.id)}
+                            className="mobile-sub-link-btn"
+                          >
+                            {subItem.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <button
@@ -544,14 +553,25 @@ export const Navbar: React.FC<NavbarProps> = ({
             height: 100vh;
           }
 
+          .main-nav.menu-open .nav-container {
+            height: 80px;
+          }
+
           .mobile-links-drawer {
             display: flex;
             flex-direction: column;
-            padding: 24px;
+            position: fixed;
+            top: 80px;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding: 18px 24px 32px;
             gap: 12px;
             animation: fadeIn 0.3s ease-out;
-            height: calc(100vh - 80px);
+            height: auto;
             overflow-y: auto;
+            background: var(--bg-app);
+            border-top: 1px solid var(--input-border);
           }
 
           .mobile-nav-link-btn {
@@ -576,11 +596,28 @@ export const Navbar: React.FC<NavbarProps> = ({
           }
 
           .mobile-dropdown-header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: none;
+            background: transparent;
             font-family: var(--font-heading);
             font-weight: 600;
             font-size: 1.2rem;
             padding: 12px 16px;
-            color: var(--text-muted);
+            color: var(--text-dark);
+            cursor: pointer;
+            text-align: left;
+          }
+
+          .mobile-dropdown-header svg {
+            flex-shrink: 0;
+            transition: transform 0.22s ease;
+          }
+
+          .mobile-dropdown-header svg.expanded {
+            transform: rotate(180deg);
           }
 
           .mobile-dropdown-content {
@@ -589,6 +626,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             padding-left: 16px;
             border-left: 2px solid var(--input-border);
             margin-left: 16px;
+            max-height: 230px;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            scrollbar-width: thin;
           }
 
           .mobile-sub-link-btn {

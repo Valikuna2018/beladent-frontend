@@ -14,7 +14,8 @@ import {
   Loader,
   LogOut,
   Upload,
-  Newspaper
+  Newspaper,
+  KeyRound
 } from 'lucide-react';
 import type { Language } from '../i18n/translations';
 import { translations } from '../i18n/translations';
@@ -41,7 +42,8 @@ type SidebarTab =
   | 'smile-gallery'
   | 'about'
   | 'contact'
-  | 'settings';
+  | 'settings'
+  | 'security';
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({
   currentLang,
@@ -78,6 +80,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [selectedFile3, setSelectedFile3] = useState<File | null>(null);
   const [selectedFile4, setSelectedFile4] = useState<File | null>(null);
   const [selectedFile5, setSelectedFile5] = useState<File | null>(null);
+  const [passwordFields, setPasswordFields] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
 
   // Force Dark Theme inside Admin console for extremely premium premium aesthetics
   useEffect(() => {
@@ -303,6 +310,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           linkedinUrl: formFields.linkedinUrl,
           youtubeUrl: formFields.youtubeUrl,
           googleMapsUrl: formFields.googleMapsUrl,
+          mondaySaturdayOpen: formFields.mondaySaturdayOpen || '10:00',
+          mondaySaturdayClose: formFields.mondaySaturdayClose || '20:00',
+          sundayOpen: formFields.sundayOpen || '10:00',
+          sundayClose: formFields.sundayClose || '18:00',
+          sundayClosed: formFields.sundayClosed ?? true,
         };
         await adminApi.updateContactInfo(payload);
       } else if (activeTab === 'settings') {
@@ -366,6 +378,28 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     }
   };
 
+  const handlePasswordChange = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (passwordFields.newPassword.length < 8) {
+      onShowToast(currentLang === 'ka' ? 'ახალი პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს' : 'New password must contain at least 8 characters', 'error');
+      return;
+    }
+    if (passwordFields.newPassword !== passwordFields.confirmPassword) {
+      onShowToast(currentLang === 'ka' ? 'ახალი პაროლები არ ემთხვევა' : 'New passwords do not match', 'error');
+      return;
+    }
+    setActionLoading(true);
+    try {
+      await adminApi.changePassword({ currentPassword: passwordFields.currentPassword, newPassword: passwordFields.newPassword });
+      setPasswordFields({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      onShowToast(currentLang === 'ka' ? 'პაროლი წარმატებით შეიცვალა' : 'Password changed successfully', 'success');
+    } catch (err: any) {
+      onShowToast(err.message || (currentLang === 'ka' ? 'პაროლის შეცვლა ვერ მოხერხდა' : 'Could not change password'), 'error');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   return (
     <div className="admin-layout animate-fade-in">
       {/* Sidebar Navigation */}
@@ -419,6 +453,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           <button onClick={() => setActiveTab('settings')} className={`sidebar-link ${activeTab === 'settings' ? 'active' : ''}`}>
             <Settings size={20} />
             <span>{t.adminSidebarSettings}</span>
+          </button>
+          <button onClick={() => setActiveTab('security')} className={`sidebar-link ${activeTab === 'security' ? 'active' : ''}`}>
+            <KeyRound size={20} />
+            <span>{currentLang === 'ka' ? 'პაროლის შეცვლა' : 'Change Password'}</span>
           </button>
         </nav>
 
@@ -536,6 +574,33 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     
                     <button type="submit" className="btn btn-primary form-submit-btn" disabled={actionLoading}>
                       {actionLoading ? <Loader className="spin-icon" size={18} /> : t.saveBtn}
+                    </button>
+                  </form>
+                </GlassCard>
+              </div>
+            )}
+
+            {activeTab === 'security' && (
+              <div className="simple-form-view animate-fade-in">
+                <div className="workspace-header">
+                  <h2>{currentLang === 'ka' ? 'პაროლის შეცვლა' : 'Change Password'}</h2>
+                </div>
+                <GlassCard className="form-workspace-card" hoverEffect={false}>
+                  <form onSubmit={handlePasswordChange} className="admin-full-form">
+                    <div className="form-group">
+                      <label>{currentLang === 'ka' ? 'მიმდინარე პაროლი' : 'Current password'}</label>
+                      <input className="glass-input" type="password" autoComplete="current-password" required value={passwordFields.currentPassword} onChange={(e) => setPasswordFields({ ...passwordFields, currentPassword: e.target.value })} />
+                    </div>
+                    <div className="form-group">
+                      <label>{currentLang === 'ka' ? 'ახალი პაროლი' : 'New password'}</label>
+                      <input className="glass-input" type="password" autoComplete="new-password" minLength={8} required value={passwordFields.newPassword} onChange={(e) => setPasswordFields({ ...passwordFields, newPassword: e.target.value })} />
+                    </div>
+                    <div className="form-group">
+                      <label>{currentLang === 'ka' ? 'გაიმეორეთ ახალი პაროლი' : 'Confirm new password'}</label>
+                      <input className="glass-input" type="password" autoComplete="new-password" minLength={8} required value={passwordFields.confirmPassword} onChange={(e) => setPasswordFields({ ...passwordFields, confirmPassword: e.target.value })} />
+                    </div>
+                    <button type="submit" className="btn btn-primary form-submit-btn" disabled={actionLoading}>
+                      {actionLoading ? <Loader className="spin-icon" size={18} /> : (currentLang === 'ka' ? 'პაროლის შენახვა' : 'Save Password')}
                     </button>
                   </form>
                 </GlassCard>
@@ -1172,6 +1237,37 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               />
             </div>
           </div>
+
+          <div className="form-double-col">
+            <div className="form-group">
+              <label className="form-label">{currentLang === 'ka' ? 'ორშაბათი - შაბათი: გახსნა' : 'Monday - Saturday: Opens'}</label>
+              <input type="time" className="glass-input" value={formFields.mondaySaturdayOpen || '10:00'} onChange={(e) => setFormFields({ ...formFields, mondaySaturdayOpen: e.target.value })} required />
+            </div>
+            <div className="form-group">
+              <label className="form-label">{currentLang === 'ka' ? 'ორშაბათი - შაბათი: დახურვა' : 'Monday - Saturday: Closes'}</label>
+              <input type="time" className="glass-input" value={formFields.mondaySaturdayClose || '20:00'} onChange={(e) => setFormFields({ ...formFields, mondaySaturdayClose: e.target.value })} required />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="checkbox-container-label">
+              <input type="checkbox" className="custom-checkbox-input" checked={formFields.sundayClosed ?? true} onChange={(e) => setFormFields({ ...formFields, sundayClosed: e.target.checked })} />
+              <span>{currentLang === 'ka' ? 'კვირას კლინიკა დაკეტილია' : 'Clinic is closed on Sunday'}</span>
+            </label>
+          </div>
+
+          {!(formFields.sundayClosed ?? true) && (
+            <div className="form-double-col">
+              <div className="form-group">
+                <label className="form-label">{currentLang === 'ka' ? 'კვირა: გახსნა' : 'Sunday: Opens'}</label>
+                <input type="time" className="glass-input" value={formFields.sundayOpen || '10:00'} onChange={(e) => setFormFields({ ...formFields, sundayOpen: e.target.value })} required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">{currentLang === 'ka' ? 'კვირა: დახურვა' : 'Sunday: Closes'}</label>
+                <input type="time" className="glass-input" value={formFields.sundayClose || '18:00'} onChange={(e) => setFormFields({ ...formFields, sundayClose: e.target.value })} required />
+              </div>
+            </div>
+          )}
 
           <div className="form-double-col">
             <div className="form-group">

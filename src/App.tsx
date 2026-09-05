@@ -134,7 +134,7 @@ function App() {
     }
 
     // Secret admin login URL
-    if (window.location.pathname === '/SecurityNia') {
+    if (window.location.pathname === '/Security') {
       setActiveSection('login');
     }
 
@@ -301,6 +301,11 @@ function App() {
           linkedinUrl={contactInfo?.linkedinUrl}
           youtubeUrl={contactInfo?.youtubeUrl}
           googleMapsUrl={contactInfo?.googleMapsUrl}
+          mondaySaturdayOpen={contactInfo?.mondaySaturdayOpen}
+          mondaySaturdayClose={contactInfo?.mondaySaturdayClose}
+          sundayOpen={contactInfo?.sundayOpen}
+          sundayClose={contactInfo?.sundayClose}
+          sundayClosed={contactInfo?.sundayClosed ?? true}
         />
       )}
 

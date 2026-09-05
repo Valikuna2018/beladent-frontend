@@ -17,6 +17,11 @@ interface FooterProps {
   linkedinUrl?: string;
   youtubeUrl?: string;
   googleMapsUrl?: string;
+  mondaySaturdayOpen?: string;
+  mondaySaturdayClose?: string;
+  sundayOpen?: string;
+  sundayClose?: string;
+  sundayClosed?: boolean;
 }
 
 export const Footer: React.FC<FooterProps> = ({
@@ -32,9 +37,26 @@ export const Footer: React.FC<FooterProps> = ({
   linkedinUrl,
   youtubeUrl,
   googleMapsUrl,
+  mondaySaturdayOpen = '10:00',
+  mondaySaturdayClose = '20:00',
+  sundayOpen = '10:00',
+  sundayClose = '18:00',
+  sundayClosed = true,
 }) => {
   const t = translations[currentLang];
   const currentYear = new Date().getFullYear();
+  const weekOpen = mondaySaturdayOpen || '10:00';
+  const weekClose = mondaySaturdayClose || '20:00';
+  const sunOpen = sundayOpen || '10:00';
+  const sunClose = sundayClose || '18:00';
+  const mondaySaturdayLabel = currentLang === 'ka'
+    ? `ორშაბათი - შაბათი: ${weekOpen} - ${weekClose}`
+    : `Monday - Saturday: ${weekOpen} - ${weekClose}`;
+  const sundayLabel = sundayClosed
+    ? (currentLang === 'ka' ? 'კვირა: დასვენება' : 'Sunday: Closed')
+    : (currentLang === 'ka'
+      ? `კვირა: ${sunOpen} - ${sunClose}`
+      : `Sunday: ${sunOpen} - ${sunClose}`);
   const mapSrc = (() => {
     if (!googleMapsUrl) return '';
     const iframeMatch = googleMapsUrl.match(/src=["']([^"']+)["']/i);
@@ -141,11 +163,11 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="working-hours-list">
             <div className="hours-item">
               <Clock size={16} />
-              <span>{t.workingHoursWeek}</span>
+              <span>{mondaySaturdayLabel}</span>
             </div>
             <div className="hours-item">
               <Clock size={16} />
-              <span>{t.workingHoursSun}</span>
+              <span>{sundayLabel}</span>
             </div>
           </div>
         </div>
