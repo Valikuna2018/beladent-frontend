@@ -5,14 +5,14 @@ import { GlassCard } from "../components/GlassCard";
 import { getFullImageUrl } from "../services/api";
 import { richTextToPlainText } from "../components/RichText";
 
-interface Props { currentLang: Language; news: any[]; onNavigate: (path: string) => void; onBack: () => void; }
+interface Props { currentLang: Language; news: any[]; siteSettings?: any; onNavigate: (path: string) => void; onBack: () => void; }
 
-export const NewsView: React.FC<Props> = ({ currentLang, news, onNavigate, onBack }) => {
+export const NewsView: React.FC<Props> = ({ currentLang, news, siteSettings, onNavigate, onBack }) => {
   const activeNews = news.filter((item) => item.active !== false);
   return (
     <main className="news-page"><div className="news-container">
       <button className="btn btn-secondary" onClick={onBack}><ArrowLeft size={18} />{currentLang === "ka" ? "უკან" : "Back"}</button>
-      <header className="news-header"><h1>{currentLang === "ka" ? "სიახლეები" : "News"}</h1><p>{currentLang === "ka" ? "ბელადენტის უახლესი ამბები და სასარგებლო ინფორმაცია" : "Latest updates and useful information from BelaDent"}</p></header>
+      <header className="news-header"><h1>{currentLang === "ka" ? "სიახლეები" : "News"}</h1><p>{currentLang === 'ka' ? (siteSettings?.newsSubtitleKa || 'ბელადენტის უახლესი ამბები და სასარგებლო ინფორმაცია') : (siteSettings?.newsSubtitleEn || 'Latest updates and useful information from BelaDent')}</p></header>
       <div className="news-list">
         {activeNews.length ? activeNews.map((item) => {
           const title = currentLang === "ka" ? item.titleKa : item.titleEn;

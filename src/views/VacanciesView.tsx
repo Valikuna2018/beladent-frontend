@@ -4,13 +4,13 @@ import type { Language } from "../i18n/translations";
 import { GlassCard } from "../components/GlassCard";
 import { richTextToPlainText } from "../components/RichText";
 
-interface Props { currentLang: Language; vacancies: any[]; onNavigate: (path: string) => void; onBack: () => void; }
+interface Props { currentLang: Language; vacancies: any[]; siteSettings?: any; onNavigate: (path: string) => void; onBack: () => void; }
 
-export const VacanciesView: React.FC<Props> = ({ currentLang, vacancies, onNavigate, onBack }) => {
+export const VacanciesView: React.FC<Props> = ({ currentLang, vacancies, siteSettings, onNavigate, onBack }) => {
   const activeVacancies = vacancies.filter((item) => item.active !== false);
   return <main className="vacancies-page"><div className="vacancies-container">
     <button className="btn btn-secondary" onClick={onBack}><ArrowLeft size={18} />{currentLang === "ka" ? "უკან" : "Back"}</button>
-    <header className="vacancies-header"><h1>{currentLang === "ka" ? "ვაკანსიები" : "Vacancies"}</h1><p>{currentLang === "ka" ? "შემოუერთდით ბელადენტის პროფესიონალ გუნდს" : "Join the professional BelaDent team"}</p></header>
+    <header className="vacancies-header"><h1>{currentLang === "ka" ? "ვაკანსიები" : "Vacancies"}</h1><p>{currentLang === 'ka' ? (siteSettings?.vacanciesSubtitleKa || 'შემოუერთდით ბელადენტის პროფესიონალ გუნდს') : (siteSettings?.vacanciesSubtitleEn || 'Join the professional BelaDent team')}</p></header>
     <div className="vacancies-list">{activeVacancies.length ? activeVacancies.map((item) => {
       const title = currentLang === "ka" ? item.titleKa : item.titleEn;
       const position = currentLang === "ka" ? item.positionKa : item.positionEn;

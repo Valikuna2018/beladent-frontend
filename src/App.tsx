@@ -200,12 +200,13 @@ function App() {
           currentLang={lang}
           serviceId={activeSection.split('/')[1]}
           services={services}
-          onBack={() => setActiveSection('home')}
+          onBack={() => setActiveSection('services')}
         />
       ) : activeSection === 'services' ? (
         <ServicesView
           currentLang={lang}
           services={services}
+          siteSettings={siteSettings}
           onNavigate={(path) => {
             setActiveSection(path);
             window.scrollTo(0, 0);
@@ -230,6 +231,7 @@ function App() {
         <NewsView
           currentLang={lang}
           news={news}
+          siteSettings={siteSettings}
           onNavigate={(path) => {
             setActiveSection(path);
             window.scrollTo(0, 0);
@@ -247,6 +249,7 @@ function App() {
         <VacanciesView
           currentLang={lang}
           vacancies={vacancies}
+          siteSettings={siteSettings}
           onNavigate={(path) => {
             setActiveSection(path);
             window.scrollTo(0, 0);
@@ -264,6 +267,7 @@ function App() {
         <SmileGalleryView
           currentLang={lang}
           items={smileGallery}
+          siteSettings={siteSettings}
           onBack={() => setActiveSection('home')}
           onNavigate={(path) => { setActiveSection(path); window.scrollTo(0, 0); }}
         />
@@ -306,6 +310,8 @@ function App() {
           sundayOpen={contactInfo?.sundayOpen}
           sundayClose={contactInfo?.sundayClose}
           sundayClosed={contactInfo?.sundayClosed ?? true}
+          descriptionKa={contactInfo?.footerDescriptionKa}
+          descriptionEn={contactInfo?.footerDescriptionEn}
         />
       )}
 

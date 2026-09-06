@@ -366,10 +366,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           font-family: var(--font-heading);
           font-weight: 700;
           font-size: 1.38rem;
-          color: var(--text-dark);
-          background: linear-gradient(135deg, var(--text-dark) 30%, var(--primary) 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
+          color: #1557ad;
+          background: none;
+          -webkit-text-fill-color: #1557ad;
+          white-space: nowrap;
         }
 
         .desktop-links {
@@ -539,7 +539,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         @media (max-width: 992px) {
           .logo-img { width: 96px; height: 56px; }
-          .clinic-title { font-size: 1.18rem; }
+          .clinic-title { font-size: 1.05rem; white-space: nowrap; }
           .desktop-links {
             display: none;
           }
@@ -675,6 +675,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             width: 100%;
             justify-content: center;
           }
+        }
+
+        @media (max-width: 520px) {
+          .nav-container { padding: 0 12px; }
+          .brand-logo { gap: 7px; min-width: 0; }
+          .logo-img { width: 78px; height: 52px; }
+          .clinic-title { font-size: 0.95rem; }
+          .toolbar-controls { gap: 6px; }
+          .btn-toolbar { padding: 7px 9px; }
         }
       `}</style>
     </header>

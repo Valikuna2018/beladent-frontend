@@ -22,6 +22,8 @@ interface FooterProps {
   sundayOpen?: string;
   sundayClose?: string;
   sundayClosed?: boolean;
+  descriptionKa?: string;
+  descriptionEn?: string;
 }
 
 export const Footer: React.FC<FooterProps> = ({
@@ -42,6 +44,8 @@ export const Footer: React.FC<FooterProps> = ({
   sundayOpen = '10:00',
   sundayClose = '18:00',
   sundayClosed = true,
+  descriptionKa,
+  descriptionEn,
 }) => {
   const t = translations[currentLang];
   const currentYear = new Date().getFullYear();
@@ -104,8 +108,8 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
           <p className="footer-description">
             {currentLang === 'ka'
-              ? 'მაღალი კვალიფიკაციის ექიმები, კომფორტული და უსაფრთხო გარემო და გარანტირებული შედეგი.'
-              : 'Highly qualified specialists, comfortable and safe environment, and guaranteed results.'}
+              ? (descriptionKa || 'მაღალი კვალიფიკაციის ექიმები, კომფორტული და უსაფრთხო გარემო და გარანტირებული შედეგი.')
+              : (descriptionEn || 'Highly qualified specialists, comfortable and safe environment, and guaranteed results.')}
           </p>
           {/* Social Icons */}
           <div className="social-links-grid">
@@ -273,7 +277,7 @@ export const Footer: React.FC<FooterProps> = ({
           font-family: var(--font-heading);
           font-weight: 700;
           font-size: 1.25rem;
-          color: var(--text-dark);
+          color: #1557ad;
         }
 
         .footer-description {

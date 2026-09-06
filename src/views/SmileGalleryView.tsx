@@ -4,15 +4,15 @@ import type { Language } from '../i18n/translations';
 import { getFullImageUrl } from '../services/api';
 import { RichTextContent } from '../components/RichText';
 
-interface Props { currentLang: Language; items: any[]; onBack: () => void; onNavigate: (path: string) => void; }
+interface Props { currentLang: Language; items: any[]; siteSettings?: any; onBack: () => void; onNavigate: (path: string) => void; }
 
-export const SmileGalleryView: React.FC<Props> = ({ currentLang, items, onBack, onNavigate }) => (
+export const SmileGalleryView: React.FC<Props> = ({ currentLang, items, siteSettings, onBack, onNavigate }) => (
   <main className="smile-gallery-page">
     <div className="smile-gallery-container">
       <button className="btn btn-secondary smile-back" onClick={onBack}><ArrowLeft size={18} />{currentLang === 'ka' ? 'უკან' : 'Back'}</button>
       <header className="smile-gallery-header">
         <h1>{currentLang === 'ka' ? 'ღიმილის გალერეა' : 'Smile Gallery'}</h1>
-        <p>{currentLang === 'ka' ? 'ჩვენი პაციენტების ბედნიერი ღიმილები' : 'Happy smiles from our patients'}</p>
+        <p>{currentLang === 'ka' ? (siteSettings?.smileGallerySubtitleKa || 'ჩვენი პაციენტების ბედნიერი ღიმილები') : (siteSettings?.smileGallerySubtitleEn || 'Happy smiles from our patients')}</p>
       </header>
       {items.length ? <div className="smile-gallery-grid">
         {items.map((item) => {

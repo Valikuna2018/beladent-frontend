@@ -315,6 +315,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           sundayOpen: formFields.sundayOpen || '10:00',
           sundayClose: formFields.sundayClose || '18:00',
           sundayClosed: formFields.sundayClosed ?? true,
+          footerDescriptionKa: formFields.footerDescriptionKa || '',
+          footerDescriptionEn: formFields.footerDescriptionEn || '',
         };
         await adminApi.updateContactInfo(payload);
       } else if (activeTab === 'settings') {
@@ -325,6 +327,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         formData.append('seoTitleEn', formFields.seoTitleEn || '');
         formData.append('seoDescriptionKa', formFields.seoDescriptionKa || '');
         formData.append('seoDescriptionEn', formFields.seoDescriptionEn || '');
+        ['services', 'doctors', 'news', 'vacancies', 'smileGallery'].forEach((section) => {
+          formData.append(`${section}SubtitleKa`, formFields[`${section}SubtitleKa`] || '');
+          formData.append(`${section}SubtitleEn`, formFields[`${section}SubtitleEn`] || '');
+        });
         if (selectedFile) formData.append('logoFile', selectedFile);
         if (selectedFile5) formData.append('geoLogoFile', selectedFile5);
         if (selectedFile2) formData.append('backgroundFile', selectedFile2);
@@ -1271,6 +1277,23 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
           <div className="form-double-col">
             <div className="form-group">
+              <label className="form-label">{currentLang === 'ka' ? 'ფუტერის ტექსტი (ქართული)' : 'Footer text (Georgian)'}</label>
+              <textarea className="glass-input" rows={4} value={formFields.footerDescriptionKa || ''} onChange={(e) => setFormFields({ ...formFields, footerDescriptionKa: e.target.value })} placeholder="ტექსტი და ემოჯი 😊" />
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
+                {['🦷', '😊', '✨', '💙', '📍', '📞'].map((emoji) => <button key={emoji} type="button" className="btn-toolbar" onClick={() => setFormFields({ ...formFields, footerDescriptionKa: (formFields.footerDescriptionKa || '') + emoji })}>{emoji}</button>)}
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="form-label">{currentLang === 'ka' ? 'ფუტერის ტექსტი (ინგლისური)' : 'Footer text (English)'}</label>
+              <textarea className="glass-input" rows={4} value={formFields.footerDescriptionEn || ''} onChange={(e) => setFormFields({ ...formFields, footerDescriptionEn: e.target.value })} placeholder="Text and emoji 😊" />
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
+                {['🦷', '😊', '✨', '💙', '📍', '📞'].map((emoji) => <button key={emoji} type="button" className="btn-toolbar" onClick={() => setFormFields({ ...formFields, footerDescriptionEn: (formFields.footerDescriptionEn || '') + emoji })}>{emoji}</button>)}
+              </div>
+            </div>
+          </div>
+
+          <div className="form-double-col">
+            <div className="form-group">
               <label className="form-label">{t.fieldFacebookUrl}</label>
               <input
                 type="url"
@@ -1380,6 +1403,19 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               onChange={(e) => setFormFields({ ...formFields, seoDescriptionEn: e.target.value })}
             />
           </div>
+
+          {[
+            ['services', currentLang === 'ka' ? 'სერვისების აღწერა' : 'Services subtitle'],
+            ['doctors', currentLang === 'ka' ? 'ექიმების აღწერა' : 'Doctors subtitle'],
+            ['news', currentLang === 'ka' ? 'სიახლეების აღწერა' : 'News subtitle'],
+            ['vacancies', currentLang === 'ka' ? 'ვაკანსიების აღწერა' : 'Vacancies subtitle'],
+            ['smileGallery', currentLang === 'ka' ? 'ღიმილის გალერეის აღწერა' : 'Smile Gallery subtitle'],
+          ].map(([key, label]) => (
+            <div className="form-double-col" key={key}>
+              <div className="form-group"><label className="form-label">{label} — ქართული</label><textarea className="glass-input" rows={3} value={formFields[`${key}SubtitleKa`] || ''} onChange={(e) => setFormFields({ ...formFields, [`${key}SubtitleKa`]: e.target.value })} /></div>
+              <div className="form-group"><label className="form-label">{label} — English</label><textarea className="glass-input" rows={3} value={formFields[`${key}SubtitleEn`] || ''} onChange={(e) => setFormFields({ ...formFields, [`${key}SubtitleEn`]: e.target.value })} /></div>
+            </div>
+          ))}
 
           {/* Files uploads settings */}
           <div className="form-double-col">

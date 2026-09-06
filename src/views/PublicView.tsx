@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Phone, ArrowRight, Info, Check, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import { Phone, ArrowRight, Info, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Language } from "../i18n/translations";
 import { translations } from "../i18n/translations";
 import { GlassCard } from "../components/GlassCard";
@@ -142,7 +142,7 @@ export const PublicView: React.FC<PublicViewProps> = ({
       <section id="services" className="public-section">
         <div className="section-header">
           <h2>{t.sectionServices}</h2>
-          <p className="section-subtitle">{t.sectionServicesSub}</p>
+          <p className="section-subtitle">{currentLang === 'ka' ? (siteSettings?.servicesSubtitleKa || t.sectionServicesSub) : (siteSettings?.servicesSubtitleEn || t.sectionServicesSub)}</p>
         </div>
         <div className="services-grid">
           {services.length > 0 ? services.map((service) => (
@@ -200,18 +200,6 @@ export const PublicView: React.FC<PublicViewProps> = ({
                 ? (about?.descriptionKa || "ბელადენტი არის წამყვანი სტომატოლოგიური კლინიკა.")
                 : (about?.descriptionEn || "BelaDent is a leading dental centre providing premium oral healthcare.")}
             />
-            <div className="about-features">
-              {[
-                currentLang === "ka" ? "საერთაშორისო სტერილიზაციის სტანდარტები" : "International Sterilization Standards",
-                currentLang === "ka" ? "ციფრული რენტგენის დიაგნოსტიკა" : "Digital X-ray Diagnostics",
-                currentLang === "ka" ? "უმტკივნეულო, კომფორტული მკურნალობა" : "Pain-free, Comfortable Treatment",
-              ].map((feat, i) => (
-                <div className="feat-row" key={i}>
-                  <div className="feat-dot"><Check size={14} /></div>
-                  <span>{feat}</span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -241,7 +229,7 @@ export const PublicView: React.FC<PublicViewProps> = ({
       <section id="doctors" className="public-section">
         <div className="section-header">
           <h2>{t.sectionDoctors}</h2>
-          <p className="section-subtitle">{t.sectionDoctorsSub}</p>
+          <p className="section-subtitle">{currentLang === 'ka' ? (siteSettings?.doctorsSubtitleKa || t.sectionDoctorsSub) : (siteSettings?.doctorsSubtitleEn || t.sectionDoctorsSub)}</p>
         </div>
         <div className="doctors-carousel">
           {doctors.length > 1 && <button className="carousel-arrow doctor-arrow left" onClick={() => scrollDoctors(-1)} aria-label="Previous doctors"><ChevronLeft size={28} /></button>}
@@ -362,9 +350,6 @@ export const PublicView: React.FC<PublicViewProps> = ({
         .content-eyebrow { font-family: var(--font-heading); font-weight: 600; font-size: 0.88rem; letter-spacing: 0.05em; color: var(--primary); }
         .about-heading { font-size: clamp(1.8rem,3vw,2.4rem); }
         .about-body-text { font-size: 1rem; line-height: 1.7; color: var(--text-muted); }
-        .about-features { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
-        .feat-row { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; font-weight: 500; color: var(--text-dark); }
-        .feat-dot { width: 28px; height: 28px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .doctors-carousel { position: relative; padding: 0 62px; }
         .partners-section { padding-top:54px; padding-bottom:42px; }
         .partners-section .section-header { margin-bottom:32px; }

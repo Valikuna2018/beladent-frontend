@@ -6,15 +6,15 @@ import { GlassCard } from "../components/GlassCard";
 import { getFullImageUrl } from "../services/api";
 import { richTextToPlainText } from "../components/RichText";
 
-interface Props { currentLang: Language; services: any[]; onNavigate: (path: string) => void; onBack: () => void; }
+interface Props { currentLang: Language; services: any[]; siteSettings?: any; onNavigate: (path: string) => void; onBack: () => void; }
 
-export const ServicesView: React.FC<Props> = ({ currentLang, services, onNavigate, onBack }) => {
+export const ServicesView: React.FC<Props> = ({ currentLang, services, siteSettings, onNavigate, onBack }) => {
   const t = translations[currentLang];
   const activeServices = services.filter((service) => service.active !== false);
   return (
     <main className="listing-page"><div className="listing-container">
       <button className="btn btn-secondary back-button" onClick={onBack}><ArrowLeft size={18} />{currentLang === "ka" ? "მთავარ გვერდზე დაბრუნება" : "Back to home"}</button>
-      <header className="listing-header"><h1>{t.sectionServices}</h1><p>{t.sectionServicesSub}</p></header>
+      <header className="listing-header"><h1>{t.sectionServices}</h1><p>{currentLang === 'ka' ? (siteSettings?.servicesSubtitleKa || t.sectionServicesSub) : (siteSettings?.servicesSubtitleEn || t.sectionServicesSub)}</p></header>
       <div className="listing-grid">
         {activeServices.length ? activeServices.map((service) => (
           <GlassCard key={service.id} className="listing-card" onClick={() => onNavigate(`service/${service.slug || service.id}`)}>
