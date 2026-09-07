@@ -11,7 +11,7 @@ export const NewsView: React.FC<Props> = ({ currentLang, news, siteSettings, onN
   const activeNews = news.filter((item) => item.active !== false);
   return (
     <main className="news-page"><div className="news-container">
-      <button className="btn btn-secondary" onClick={onBack}><ArrowLeft size={18} />{currentLang === "ka" ? "უკან" : "Back"}</button>
+      <button className="btn btn-secondary site-back-button" onClick={onBack}><ArrowLeft size={18} />{currentLang === "ka" ? "უკან" : "Back"}</button>
       <header className="news-header"><h1>{currentLang === "ka" ? "სიახლეები" : "News"}</h1><p>{currentLang === 'ka' ? (siteSettings?.newsSubtitleKa || 'ბელადენტის უახლესი ამბები და სასარგებლო ინფორმაცია') : (siteSettings?.newsSubtitleEn || 'Latest updates and useful information from BelaDent')}</p></header>
       <div className="news-list">
         {activeNews.length ? activeNews.map((item) => {
@@ -19,7 +19,7 @@ export const NewsView: React.FC<Props> = ({ currentLang, news, siteSettings, onN
           const body = richTextToPlainText(currentLang === "ka" ? item.textKa : item.textEn);
           return <GlassCard key={item.id} className="news-row" onClick={() => onNavigate(`news/${item.id}`)}>
             <div className="news-thumb">{item.imageUrl ? <img src={getFullImageUrl(item.imageUrl)} alt={title} /> : <div className="news-fallback">📰</div>}</div>
-            <div className="news-copy"><h2>{title}</h2><p>{body?.slice(0, 180)}{body?.length > 180 ? "…" : ""}</p><span>{currentLang === "ka" ? "სრულად წაკითხვა" : "Read full story"} <ArrowRight size={17} /></span></div>
+            <div className="news-copy"><h2>{title}</h2><p>{body?.slice(0, 180)}{body?.length > 180 ? "…" : ""}</p><span>{currentLang === "ka" ? "სრულად" : "View more"} <ArrowRight size={17} /></span></div>
           </GlassCard>;
         }) : <div className="news-empty"><Info size={34} />{currentLang === "ka" ? "სიახლეები ჯერ არ არის დამატებული." : "No news has been added yet."}</div>}
       </div>

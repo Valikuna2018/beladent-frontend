@@ -61,10 +61,24 @@ export const Footer: React.FC<FooterProps> = ({
     : (currentLang === 'ka'
       ? `კვირა: ${sunOpen} - ${sunClose}`
       : `Sunday: ${sunOpen} - ${sunClose}`);
-  const mapSrc = (() => {
+  const googleMapsLink = (() => {
     if (!googleMapsUrl) return '';
     const iframeMatch = googleMapsUrl.match(/src=["']([^"']+)["']/i);
     const candidate = (iframeMatch?.[1] || googleMapsUrl).trim().replace(/&amp;/g, '&');
+    try {
+      const parsed = new URL(candidate);
+      const isGoogleMaps = parsed.protocol === 'https:' && (
+        /(^|\.)google\.[a-z.]+$/.test(parsed.hostname) ||
+        parsed.hostname === 'maps.app.goo.gl'
+      );
+      return isGoogleMaps ? candidate : '';
+    } catch {
+      return '';
+    }
+  })();
+  const mapSrc = (() => {
+    if (!googleMapsLink) return '';
+    const candidate = googleMapsLink;
     try {
       const parsed = new URL(candidate);
       const isGoogleMaps = parsed.protocol === 'https:' && (
@@ -104,7 +118,9 @@ export const Footer: React.FC<FooterProps> = ({
             ) : (
               <span className="footer-brand-logo">🦷</span>
             )}
-            <span className="footer-brand-title">{clinicName}</span>
+            <span className={`footer-brand-title ${currentLang === 'ka' ? 'georgian-brand-title' : 'english-brand-title'}`}>
+              {clinicName}
+            </span>
           </div>
           <p className="footer-description">
             {currentLang === 'ka'
@@ -154,10 +170,17 @@ export const Footer: React.FC<FooterProps> = ({
               <Mail size={16} />
               <span>{email}</span>
             </a>
-            <div className="contact-item-text">
-              <MapPin size={16} />
-              <span>{address}</span>
-            </div>
+            {googleMapsLink ? (
+              <a href={googleMapsLink} target="_blank" rel="noopener noreferrer" className="contact-item-link" aria-label={`${address} — Google Maps`}>
+                <MapPin size={16} />
+                <span>{address}</span>
+              </a>
+            ) : (
+              <div className="contact-item-text">
+                <MapPin size={16} />
+                <span>{address}</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -278,6 +301,20 @@ export const Footer: React.FC<FooterProps> = ({
           font-weight: 700;
           font-size: 1.25rem;
           color: #1557ad;
+        }
+
+        .footer-brand-title.georgian-brand-title {
+          font-family: 'BPG Nino Mtavruli', 'Sylfaen', sans-serif;
+          font-weight: 700;
+          letter-spacing: 0;
+          line-height: 1;
+        }
+
+
+        .footer-brand-title.english-brand-title {
+          font-family: 'Segoe UI', Arial, sans-serif;
+          font-weight: 700;
+          letter-spacing: 0;
         }
 
         .footer-description {

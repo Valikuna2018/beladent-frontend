@@ -143,6 +143,7 @@ function App() {
 
   // Sync title updates if language changes
   useEffect(() => {
+    document.documentElement.lang = lang;
     if (siteSettings) {
       const activeTitle = lang === 'ka'
         ? (siteSettings.seoTitleKa || siteSettings.clinicNameKa || 'ბელადენტი')

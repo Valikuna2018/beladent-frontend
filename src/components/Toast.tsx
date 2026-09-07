@@ -60,7 +60,7 @@ export const Toast: React.FC<ToastProps> = ({
           border: 1px solid rgba(255, 255, 255, 0.4);
           animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
           color: #0f172a;
-          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-family: var(--font-body);
           font-size: 0.92rem;
           font-weight: 500;
         }

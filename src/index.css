@@ -1,15 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@font-face {
+  font-family: 'BPG Nino Medium';
+  src: url('./assets/fonts/BPGNinoMedium.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BPG Nino Mtavruli';
+  src: url('./assets/fonts/BPGNinoMtavruliBold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   /* HSL Color Palette */
-  --primary-raw: 216 78% 38%;
-  --primary: hsl(var(--primary-raw));             /* BelaDent Cobalt Blue */
-  --primary-hover: hsl(216 82% 31%);
+  --primary-raw: 213 79% 38%;
+  --primary: #1557ad;                             /* Exact BelaDent Logo Blue */
+  --primary-hover: #10478f;
   --primary-light: hsl(216 86% 95%);
   
-  --accent-cyan-raw: 196 88% 46%;
-  --accent-cyan: hsl(var(--accent-cyan-raw));      /* High-tech Cyan */
-  --accent-cyan-light: hsl(196 88% 96%);
+  --accent-cyan-raw: 213 79% 38%;
+  --accent-cyan: #1557ad;
+  --accent-cyan-light: #eef5ff;
 
   --accent-mint: hsl(152 68% 46%);        /* Fresh Mint Green */
   --accent-coral: hsl(12 88% 59%);        /* Gentle Coral for alerts */
@@ -29,21 +43,39 @@
   --scrollbar-thumb: rgba(20, 76, 168, 0.24);
 
   /* Fonts */
-  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'BPG Nino Medium', 'Segoe UI', sans-serif;
+  --font-body: 'BPG Nino Medium', 'Segoe UI', sans-serif;
   
   transition: background 0.4s ease;
 }
 
+html[lang='en'] {
+  --font-heading: 'Segoe UI', Arial, sans-serif;
+  --font-body: 'Segoe UI', Arial, sans-serif;
+}
+
+html[lang='en'] body {
+  letter-spacing: 0.01em;
+}
+
+html[lang='en'] h1,
+html[lang='en'] h2,
+html[lang='en'] h3,
+html[lang='en'] h4,
+html[lang='en'] h5,
+html[lang='en'] h6 {
+  letter-spacing: 0;
+}
+
 /* Custom Dark Mode Class (applied to body/root for admin layout or togglable settings) */
 .dark-theme {
-  --primary-raw: 182 80% 40%;
-  --primary: hsl(var(--primary-raw));
-  --primary-hover: hsl(182 80% 48%);
-  --primary-light: hsl(182 80% 12%);
+  --primary-raw: 213 79% 38%;
+  --primary: #1557ad;
+  --primary-hover: #246bc4;
+  --primary-light: rgba(21, 87, 173, 0.18);
 
-  --accent-cyan-raw: 189 100% 50%;
-  --accent-cyan: hsl(var(--accent-cyan-raw));
+  --accent-cyan-raw: 213 79% 38%;
+  --accent-cyan: #1557ad;
 
   --text-dark: #f8fafc;
   --text-muted: #94a3b8;
@@ -74,10 +106,17 @@ html, body, #root {
 
 body {
   font-family: var(--font-body);
+  font-weight: 600;
+  font-synthesis: weight;
   background: var(--bg-app);
   color: var(--text-dark);
   line-height: 1.6;
   overflow-x: hidden;
+}
+
+button, input, textarea, select {
+  font-family: var(--font-body);
+  font-weight: 600;
 }
 
 /* Custom Premium Scrollbar */
@@ -229,6 +268,19 @@ a:hover {
 }
 .dark-theme .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+/* Consistent navigation back buttons across every public page. */
+.site-back-button {
+  font-weight: 800 !important;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease !important;
+}
+
+.site-back-button:hover {
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  background: var(--primary-light) !important;
+  transform: translateX(-4px) !important;
 }
 
 .btn-danger {

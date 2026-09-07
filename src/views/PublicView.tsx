@@ -124,7 +124,7 @@ export const PublicView: React.FC<PublicViewProps> = ({
               ? (siteSettings?.seoTitleKa || "თქვენი ღიმილის ფორმულა")
               : (siteSettings?.seoTitleEn || "The Formula for Your Smile")}
           </h1>
-          <p className="hero-subtext">{seoDescription}</p>
+          <p className={`hero-subtext ${currentLang === "ka" ? "georgian" : ""}`}>{seoDescription}</p>
           <div className="hero-actions">
             <button onClick={() => onNavigate("services")} className="btn btn-primary btn-lg">
               <span>{t.navServices}</span>
@@ -315,8 +315,9 @@ export const PublicView: React.FC<PublicViewProps> = ({
         .hero-dots button { width: 9px; height: 9px; padding: 0; border: 0; border-radius: 50%; background: rgba(255,255,255,.45); cursor: pointer; transition: width .25s, background .25s; }
         .hero-dots button.active { width: 28px; border-radius: 8px; background: white; }
         .hero-headline { font-size: clamp(2rem,5vw,3.6rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; background: linear-gradient(135deg,#fff 40%,#e0f2fe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-headline.georgian { line-height: 1.35; padding: 0.08em 0 0.22em; overflow: visible; letter-spacing: -0.015em; }
+        .hero-headline.georgian { line-height: 1.35; padding: 0.08em 0 0.22em; overflow: visible; letter-spacing: -0.015em; font-weight: 900; -webkit-text-stroke: 0.45px rgba(255,255,255,.92); }
         .hero-subtext { font-size: clamp(1rem,2.5vw,1.2rem); color: #94a3b8; max-width: 620px; line-height: 1.6; }
+        .hero-subtext.georgian { font-weight: 800; -webkit-text-stroke: 0.15px #94a3b8; }
         .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
         .btn-lg { padding: 14px 32px; font-size: 1.05rem; border-radius: 14px; }
         .public-section { max-width: 1200px; margin: 0 auto; padding: 90px 24px; }

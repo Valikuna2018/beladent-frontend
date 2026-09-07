@@ -20,7 +20,7 @@ export const VacancyDetailView: React.FC<VacancyDetailViewProps> = ({ currentLan
   if (!vacancy) {
     return (
       <div className="detail-page-container">
-        <button className="back-btn" onClick={onBack}><ArrowLeft size={20} /> უკან დაბრუნება</button>
+        <button className="back-btn site-back-button" onClick={onBack}><ArrowLeft size={20} /> უკან დაბრუნება</button>
         <div style={{ padding: '40px', textAlign: 'center' }}>
           <h2>{currentLang === 'ka' ? 'ვაკანსია ვერ მოიძებნა' : 'Vacancy not found'}</h2>
         </div>
@@ -35,7 +35,7 @@ export const VacancyDetailView: React.FC<VacancyDetailViewProps> = ({ currentLan
   return (
     <div className="detail-page-container animate-fade-in">
       <div className="detail-header-wrapper">
-        <button className="back-btn" onClick={onBack}>
+        <button className="back-btn site-back-button" onClick={onBack}>
           <ArrowLeft size={20} /> {currentLang === 'ka' ? 'უკან' : 'Back'}
         </button>
       </div>

@@ -12,12 +12,12 @@ export const SmileGalleryDetailView: React.FC<Props> = ({ currentLang, itemId, i
     window.scrollTo(0, 0);
   }, []);
 
-  if (!item) return <main className="smile-detail-page"><button className="smile-detail-back" onClick={onBack}><ArrowLeft size={19} />{currentLang === 'ka' ? 'უკან' : 'Back'}</button><h1>{currentLang === 'ka' ? 'ჩანაწერი ვერ მოიძებნა' : 'Gallery item not found'}</h1></main>;
+  if (!item) return <main className="smile-detail-page"><button className="smile-detail-back site-back-button" onClick={onBack}><ArrowLeft size={19} />{currentLang === 'ka' ? 'უკან' : 'Back'}</button><h1>{currentLang === 'ka' ? 'ჩანაწერი ვერ მოიძებნა' : 'Gallery item not found'}</h1></main>;
 
   const title = currentLang === 'ka' ? item.titleKa : item.titleEn;
   const text = currentLang === 'ka' ? item.textKa : item.textEn;
   return <main className="smile-detail-page animate-fade-in">
-    <button className="smile-detail-back" onClick={onBack}><ArrowLeft size={19} />{currentLang === 'ka' ? 'გალერეაზე დაბრუნება' : 'Back to gallery'}</button>
+    <button className="smile-detail-back site-back-button" onClick={onBack}><ArrowLeft size={19} />{currentLang === 'ka' ? 'გალერეაზე დაბრუნება' : 'Back to gallery'}</button>
     <article className="smile-detail-card">
       <div className="smile-detail-image">{item.imageUrl ? <img src={getFullImageUrl(item.imageUrl)} alt={title} /> : <ImageIcon size={64} />}</div>
       <div className="smile-detail-copy"><h1>{title}</h1><span className="smile-detail-accent" />{text && <RichTextContent className="smile-detail-text" html={text} />}</div>

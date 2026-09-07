@@ -9,14 +9,14 @@ interface Props { currentLang: Language; vacancies: any[]; siteSettings?: any; o
 export const VacanciesView: React.FC<Props> = ({ currentLang, vacancies, siteSettings, onNavigate, onBack }) => {
   const activeVacancies = vacancies.filter((item) => item.active !== false);
   return <main className="vacancies-page"><div className="vacancies-container">
-    <button className="btn btn-secondary" onClick={onBack}><ArrowLeft size={18} />{currentLang === "ka" ? "უკან" : "Back"}</button>
+    <button className="btn btn-secondary site-back-button" onClick={onBack}><ArrowLeft size={18} />{currentLang === "ka" ? "უკან" : "Back"}</button>
     <header className="vacancies-header"><h1>{currentLang === "ka" ? "ვაკანსიები" : "Vacancies"}</h1><p>{currentLang === 'ka' ? (siteSettings?.vacanciesSubtitleKa || 'შემოუერთდით ბელადენტის პროფესიონალ გუნდს') : (siteSettings?.vacanciesSubtitleEn || 'Join the professional BelaDent team')}</p></header>
     <div className="vacancies-list">{activeVacancies.length ? activeVacancies.map((item) => {
       const title = currentLang === "ka" ? item.titleKa : item.titleEn;
       const position = currentLang === "ka" ? item.positionKa : item.positionEn;
       const body = richTextToPlainText(currentLang === "ka" ? item.descriptionKa : item.descriptionEn);
       return <GlassCard key={item.id} className="vacancy-row" onClick={() => onNavigate(`vacancy/${item.id}`)}>
-        <div className="vacancy-icon"><Briefcase size={34} /></div><div className="vacancy-copy"><span className="vacancy-position">{position}</span><h2>{title}</h2><p>{body?.slice(0, 180)}{body?.length > 180 ? "…" : ""}</p><strong>{currentLang === "ka" ? "სრულად ნახვა" : "View vacancy"} <ArrowRight size={17} /></strong></div>
+        <div className="vacancy-icon"><Briefcase size={34} /></div><div className="vacancy-copy"><span className="vacancy-position">{position}</span><h2>{title}</h2><p>{body?.slice(0, 180)}{body?.length > 180 ? "…" : ""}</p><strong>{currentLang === "ka" ? "სრულად" : "View vacancy"} <ArrowRight size={17} /></strong></div>
       </GlassCard>;
     }) : <div className="vacancies-empty"><Info size={34} />{currentLang === "ka" ? "ამჟამად ვაკანსიები არ არის." : "No vacancies at the moment."}</div>}</div>
   </div><style>{`

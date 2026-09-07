@@ -696,7 +696,23 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           display: flex;
           flex-direction: column;
           gap: 8px;
+          flex: 1;
+          min-height: 0;
+          overflow-y: auto;
+          overflow-x: hidden;
+          padding-right: 4px;
+          scrollbar-width: thin;
+          scrollbar-color: rgba(148, 163, 184, 0.45) transparent;
+          @media (max-width: 992px) {
+            flex: none;
+            overflow: visible;
+            padding-right: 0;
+          }
         }
+
+        .sidebar-nav::-webkit-scrollbar { width: 5px; }
+        .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+        .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.45); border-radius: 999px; }
 
         .sidebar-link {
           display: flex;

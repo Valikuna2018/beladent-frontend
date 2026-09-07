@@ -9,7 +9,7 @@ interface Props { currentLang: Language; items: any[]; siteSettings?: any; onBac
 export const SmileGalleryView: React.FC<Props> = ({ currentLang, items, siteSettings, onBack, onNavigate }) => (
   <main className="smile-gallery-page">
     <div className="smile-gallery-container">
-      <button className="btn btn-secondary smile-back" onClick={onBack}><ArrowLeft size={18} />{currentLang === 'ka' ? 'უკან' : 'Back'}</button>
+      <button className="btn btn-secondary smile-back site-back-button" onClick={onBack}><ArrowLeft size={18} />{currentLang === 'ka' ? 'უკან' : 'Back'}</button>
       <header className="smile-gallery-header">
         <h1>{currentLang === 'ka' ? 'ღიმილის გალერეა' : 'Smile Gallery'}</h1>
         <p>{currentLang === 'ka' ? (siteSettings?.smileGallerySubtitleKa || 'ჩვენი პაციენტების ბედნიერი ღიმილები') : (siteSettings?.smileGallerySubtitleEn || 'Happy smiles from our patients')}</p>

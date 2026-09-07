@@ -13,7 +13,7 @@ export const ServicesView: React.FC<Props> = ({ currentLang, services, siteSetti
   const activeServices = services.filter((service) => service.active !== false);
   return (
     <main className="listing-page"><div className="listing-container">
-      <button className="btn btn-secondary back-button" onClick={onBack}><ArrowLeft size={18} />{currentLang === "ka" ? "მთავარ გვერდზე დაბრუნება" : "Back to home"}</button>
+      <button className="btn btn-secondary back-button site-back-button" onClick={onBack}><ArrowLeft size={18} />{currentLang === "ka" ? "მთავარ გვერდზე დაბრუნება" : "Back to home"}</button>
       <header className="listing-header"><h1>{t.sectionServices}</h1><p>{currentLang === 'ka' ? (siteSettings?.servicesSubtitleKa || t.sectionServicesSub) : (siteSettings?.servicesSubtitleEn || t.sectionServicesSub)}</p></header>
       <div className="listing-grid">
         {activeServices.length ? activeServices.map((service) => (

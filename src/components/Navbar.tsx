@@ -127,7 +127,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           ) : (
             <div className="logo-fallback-icon">🦷</div>
           )}
-          <span className="clinic-title">{clinicName}</span>
+          <span className={`clinic-title ${currentLang === 'ka' ? 'georgian-brand-title' : 'english-brand-title'}`}>
+            {clinicName}
+          </span>
         </div>
 
         {/* Desktop Navigation */}
@@ -370,6 +372,21 @@ export const Navbar: React.FC<NavbarProps> = ({
           background: none;
           -webkit-text-fill-color: #1557ad;
           white-space: nowrap;
+          letter-spacing: 0;
+          line-height: 1;
+          flex-shrink: 0;
+        }
+
+        .clinic-title.georgian-brand-title {
+          font-family: 'BPG Nino Mtavruli', 'Sylfaen', sans-serif;
+          font-weight: 700;
+          line-height: 1;
+        }
+
+        .clinic-title.english-brand-title {
+          font-family: 'Segoe UI', Arial, sans-serif;
+          font-weight: 700;
+          letter-spacing: 0;
         }
 
         .desktop-links {
@@ -404,8 +421,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           border: none;
           color: var(--text-dark);
           font-family: var(--font-heading);
-          font-weight: 500;
-          font-size: 0.95rem;
+          font-weight: 700;
+          font-size: 1.05rem;
           cursor: pointer;
           transition: all 0.2s ease;
         }
@@ -426,8 +443,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           border: none;
           color: var(--text-dark);
           font-family: var(--font-heading);
-          font-weight: 550;
-          font-size: 0.94rem;
+          font-weight: 700;
+          font-size: 1.08rem;
           padding: 8px 16px;
           border-radius: 8px;
           cursor: pointer;
@@ -579,8 +596,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             border: none;
             color: var(--text-dark);
             font-family: var(--font-heading);
-            font-weight: 600;
-            font-size: 1.2rem;
+            font-weight: 700;
+            font-size: 1.28rem;
             padding: 12px 16px;
             border-radius: 10px;
             text-align: left;
@@ -603,8 +620,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             border: none;
             background: transparent;
             font-family: var(--font-heading);
-            font-weight: 600;
-            font-size: 1.2rem;
+            font-weight: 700;
+            font-size: 1.28rem;
             padding: 12px 16px;
             color: var(--text-dark);
             cursor: pointer;
@@ -637,8 +654,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             border: none;
             color: var(--text-dark);
             font-family: var(--font-heading);
-            font-weight: 500;
-            font-size: 1.1rem;
+            font-weight: 700;
+            font-size: 1.16rem;
             padding: 10px 16px;
             text-align: left;
             cursor: pointer;

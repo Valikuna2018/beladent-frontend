@@ -12,7 +12,7 @@ export const NewsDetailView: React.FC<Props> = ({ currentLang, newsId, news, onB
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
   if (!item) {
-    return <main className="news-detail-page"><button className="back-btn" onClick={onBack}><ArrowLeft size={20} />{currentLang === 'ka' ? 'უკან' : 'Back'}</button><h1>{currentLang === 'ka' ? 'სიახლე ვერ მოიძებნა' : 'News item not found'}</h1></main>;
+    return <main className="news-detail-page"><button className="back-btn site-back-button" onClick={onBack}><ArrowLeft size={20} />{currentLang === 'ka' ? 'უკან' : 'Back'}</button><h1>{currentLang === 'ka' ? 'სიახლე ვერ მოიძებნა' : 'News item not found'}</h1></main>;
   }
 
   const title = currentLang === 'ka' ? item.titleKa : item.titleEn;
@@ -21,7 +21,7 @@ export const NewsDetailView: React.FC<Props> = ({ currentLang, newsId, news, onB
   return (
     <main className="news-detail-page animate-fade-in">
       <div className="news-header-wrapper">
-        <button className="back-btn" onClick={onBack}><ArrowLeft size={20} />{currentLang === 'ka' ? 'უკან' : 'Back'}</button>
+        <button className="back-btn site-back-button" onClick={onBack}><ArrowLeft size={20} />{currentLang === 'ka' ? 'უკან' : 'Back'}</button>
       </div>
       <article className="news-detail-card glass-panel">
         <div className="news-profile-header">
