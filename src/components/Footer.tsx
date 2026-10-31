@@ -221,9 +221,9 @@ export const Footer: React.FC<FooterProps> = ({
 
       <style>{`
         .footer-section {
-          background: rgba(255, 255, 255, 0.4);
+          background: rgba(250, 246, 234, 0.72);
           backdrop-filter: blur(12px);
-          border-top: 1px solid rgba(255, 255, 255, 0.4);
+          border-top: 1px solid rgba(169, 139, 47, 0.16);
           padding: 60px 0 24px;
           margin-top: auto;
           width: 100%;
@@ -300,7 +300,7 @@ export const Footer: React.FC<FooterProps> = ({
           font-family: var(--font-heading);
           font-weight: 700;
           font-size: 1.25rem;
-          color: #1557ad;
+          color: var(--primary);
         }
 
         .footer-brand-title.georgian-brand-title {

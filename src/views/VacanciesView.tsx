@@ -20,7 +20,7 @@ export const VacanciesView: React.FC<Props> = ({ currentLang, vacancies, siteSet
       </GlassCard>;
     }) : <div className="vacancies-empty"><Info size={34} />{currentLang === "ka" ? "ამჟამად ვაკანსიები არ არის." : "No vacancies at the moment."}</div>}</div>
   </div><style>{`
-    .vacancies-page{min-height:80vh;padding:120px 24px 80px;background:var(--bg-color,#f8fafc)}.vacancies-container{max-width:950px;margin:auto}.vacancies-header{text-align:center;margin:20px auto 48px}
+    .vacancies-page{min-height:80vh;padding:120px 24px 80px;background:var(--bg-app)}.vacancies-container{max-width:950px;margin:auto}.vacancies-header{text-align:center;margin:20px auto 48px}
     .vacancies-header h1{font-size:clamp(2rem,4vw,3rem)}.vacancies-header p{color:var(--text-muted);margin-top:12px}.vacancies-list{display:flex;flex-direction:column;gap:22px}
     .vacancy-row{display:grid;grid-template-columns:100px 1fr;align-items:center;padding:28px;cursor:pointer}.vacancy-icon{width:76px;height:76px;border-radius:20px;display:grid;place-items:center;background:var(--primary-light);color:var(--primary)}
     .vacancy-copy h2{font-size:1.4rem;margin:7px 0}.vacancy-position{color:var(--primary);font-weight:700;text-transform:uppercase;font-size:.8rem;letter-spacing:.06em}.vacancy-copy p{color:var(--text-muted);line-height:1.6;margin-bottom:14px}

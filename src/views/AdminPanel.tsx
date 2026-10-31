@@ -24,6 +24,18 @@ import { GlassCard } from '../components/GlassCard';
 import { CustomModal } from '../components/CustomModal';
 import { RichTextEditor } from '../components/RichText';
 
+const FREQUENT_EMOJIS = ['🦷', '😊', '✨', '🤍', '💛', '📍', '📞', '✅', '⭐', '❤️', '👨‍⚕️', '👩‍⚕️'];
+
+const EmojiToolbar: React.FC<{ onPick: (emoji: string) => void }> = ({ onPick }) => (
+  <div className="admin-emoji-toolbar" aria-label="Frequently used emojis">
+    {FREQUENT_EMOJIS.map((emoji) => (
+      <button key={emoji} type="button" className="btn-toolbar admin-emoji-button" onClick={() => onPick(emoji)} title={`Insert ${emoji}`}>
+        {emoji}
+      </button>
+    ))}
+  </div>
+);
+
 interface AdminPanelProps {
   currentLang: Language;
   onLogout: () => void;
@@ -172,19 +184,19 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       setSelectedId(null);
       // Initialize fresh fields based on tab
       if (activeTab === 'services') {
-        setFormFields({ titleKa: '', titleEn: '', slug: '', descriptionKa: '', descriptionEn: '', sortOrder: 0, active: true });
+        setFormFields({ titleKa: '', titleEn: '', slug: '', descriptionKa: '', descriptionEn: '', imageAltKa: '', imageAltEn: '', sortOrder: 0, active: true });
       } else if (activeTab === 'doctors') {
-        setFormFields({ firstNameKa: '', firstNameEn: '', lastNameKa: '', lastNameEn: '', specializationKa: '', specializationEn: '', slug: '', descriptionKa: '', descriptionEn: '', sortOrder: 0, active: true });
+        setFormFields({ firstNameKa: '', firstNameEn: '', lastNameKa: '', lastNameEn: '', specializationKa: '', specializationEn: '', slug: '', descriptionKa: '', descriptionEn: '', imageAltKa: '', imageAltEn: '', sortOrder: 0, active: true });
       } else if (activeTab === 'gallery') {
-        setFormFields({ titleKa: '', titleEn: '', sortOrder: 0, active: true });
+        setFormFields({ titleKa: '', titleEn: '', imageAltKa: '', imageAltEn: '', sortOrder: 0, active: true });
       } else if (activeTab === 'partners') {
         setFormFields({ name: '', sortOrder: 0, active: true });
       } else if (activeTab === 'vacancies') {
         setFormFields({ titleKa: '', titleEn: '', positionKa: '', positionEn: '', descriptionKa: '', descriptionEn: '', active: true });
       } else if (activeTab === 'news') {
-        setFormFields({ titleKa: '', titleEn: '', textKa: '', textEn: '', sortOrder: 0, active: true });
+        setFormFields({ titleKa: '', titleEn: '', textKa: '', textEn: '', imageAltKa: '', imageAltEn: '', sortOrder: 0, active: true });
       } else if (activeTab === 'smile-gallery') {
-        setFormFields({ titleKa: '', titleEn: '', textKa: '', textEn: '', sortOrder: 0, active: true });
+        setFormFields({ titleKa: '', titleEn: '', textKa: '', textEn: '', imageAltKa: '', imageAltEn: '', sortOrder: 0, active: true });
       }
     }
     setIsModalOpen(true);
@@ -202,6 +214,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         formData.append('slug', formFields.slug || '');
         formData.append('descriptionKa', formFields.descriptionKa || '');
         formData.append('descriptionEn', formFields.descriptionEn || '');
+        formData.append('imageAltKa', formFields.imageAltKa || '');
+        formData.append('imageAltEn', formFields.imageAltEn || '');
         formData.append('sortOrder', String(formFields.sortOrder || 0));
         formData.append('active', String(formFields.active ?? true));
         if (selectedFile) formData.append('file', selectedFile);
@@ -222,6 +236,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         formData.append('slug', formFields.slug || '');
         formData.append('descriptionKa', formFields.descriptionKa || '');
         formData.append('descriptionEn', formFields.descriptionEn || '');
+        formData.append('imageAltKa', formFields.imageAltKa || '');
+        formData.append('imageAltEn', formFields.imageAltEn || '');
         formData.append('sortOrder', String(formFields.sortOrder || 0));
         formData.append('active', String(formFields.active ?? true));
         if (selectedFile) formData.append('file', selectedFile);
@@ -235,6 +251,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         const formData = new FormData();
         formData.append('titleKa', formFields.titleKa || '');
         formData.append('titleEn', formFields.titleEn || '');
+        formData.append('imageAltKa', formFields.imageAltKa || '');
+        formData.append('imageAltEn', formFields.imageAltEn || '');
         formData.append('sortOrder', String(formFields.sortOrder || 0));
         formData.append('active', String(formFields.active ?? true));
         if (selectedFile) formData.append('file', selectedFile);
@@ -274,6 +292,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         formData.append('titleEn', formFields.titleEn || '');
         formData.append('textKa', formFields.textKa || '');
         formData.append('textEn', formFields.textEn || '');
+        formData.append('imageAltKa', formFields.imageAltKa || '');
+        formData.append('imageAltEn', formFields.imageAltEn || '');
         formData.append('sortOrder', String(formFields.sortOrder || 0));
         formData.append('active', String(formFields.active ?? true));
         if (selectedFile) formData.append('file', selectedFile);
@@ -285,6 +305,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         formData.append('titleEn', formFields.titleEn || '');
         formData.append('textKa', formFields.textKa || '');
         formData.append('textEn', formFields.textEn || '');
+        formData.append('imageAltKa', formFields.imageAltKa || '');
+        formData.append('imageAltEn', formFields.imageAltEn || '');
         formData.append('sortOrder', String(formFields.sortOrder || 0));
         formData.append('active', String(formFields.active ?? true));
         if (selectedFile) formData.append('file', selectedFile);
@@ -964,6 +986,34 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           width: 100%;
         }
 
+        .admin-emoji-toolbar {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 7px;
+          margin-top: 9px;
+        }
+
+        .admin-emoji-button {
+          width: 40px;
+          height: 38px;
+          padding: 0;
+          display: grid;
+          place-items: center;
+          font-size: 18px;
+          border: 1px solid var(--input-border);
+          border-radius: 9px;
+          background: var(--input-bg);
+          color: var(--text-dark);
+          cursor: pointer;
+          transition: border-color .2s ease, background .2s ease, transform .2s ease;
+        }
+
+        .admin-emoji-button:hover {
+          border-color: var(--primary);
+          background: var(--primary-light);
+          transform: translateY(-1px);
+        }
+
         @media (max-width: 900px) {
           .modal-crud-form { min-width: 820px; }
         }
@@ -975,6 +1025,21 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           @media (max-width: 768px) {
             grid-template-columns: 1fr;
           }
+        }
+
+        .image-alt-fields {
+          padding: 16px;
+          border: 1px solid var(--input-border);
+          border-radius: 14px;
+          background: rgba(169, 139, 47, 0.06);
+        }
+
+        .field-help-text {
+          display: block;
+          margin-top: 6px;
+          color: var(--text-muted);
+          font-size: 0.78rem;
+          line-height: 1.45;
         }
 
         .file-upload-zone {
@@ -1295,16 +1360,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             <div className="form-group">
               <label className="form-label">{currentLang === 'ka' ? 'ფუტერის ტექსტი (ქართული)' : 'Footer text (Georgian)'}</label>
               <textarea className="glass-input" rows={4} value={formFields.footerDescriptionKa || ''} onChange={(e) => setFormFields({ ...formFields, footerDescriptionKa: e.target.value })} placeholder="ტექსტი და ემოჯი 😊" />
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
-                {['🦷', '😊', '✨', '💙', '📍', '📞'].map((emoji) => <button key={emoji} type="button" className="btn-toolbar" onClick={() => setFormFields({ ...formFields, footerDescriptionKa: (formFields.footerDescriptionKa || '') + emoji })}>{emoji}</button>)}
-              </div>
+              <EmojiToolbar onPick={(emoji) => setFormFields((previous: any) => ({ ...previous, footerDescriptionKa: (previous.footerDescriptionKa || '') + emoji }))} />
             </div>
             <div className="form-group">
               <label className="form-label">{currentLang === 'ka' ? 'ფუტერის ტექსტი (ინგლისური)' : 'Footer text (English)'}</label>
               <textarea className="glass-input" rows={4} value={formFields.footerDescriptionEn || ''} onChange={(e) => setFormFields({ ...formFields, footerDescriptionEn: e.target.value })} placeholder="Text and emoji 😊" />
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
-                {['🦷', '😊', '✨', '💙', '📍', '📞'].map((emoji) => <button key={emoji} type="button" className="btn-toolbar" onClick={() => setFormFields({ ...formFields, footerDescriptionEn: (formFields.footerDescriptionEn || '') + emoji })}>{emoji}</button>)}
-              </div>
+              <EmojiToolbar onPick={(emoji) => setFormFields((previous: any) => ({ ...previous, footerDescriptionEn: (previous.footerDescriptionEn || '') + emoji }))} />
             </div>
           </div>
 
@@ -1428,8 +1489,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             ['smileGallery', currentLang === 'ka' ? 'ღიმილის გალერეის აღწერა' : 'Smile Gallery subtitle'],
           ].map(([key, label]) => (
             <div className="form-double-col" key={key}>
-              <div className="form-group"><label className="form-label">{label} — ქართული</label><textarea className="glass-input" rows={3} value={formFields[`${key}SubtitleKa`] || ''} onChange={(e) => setFormFields({ ...formFields, [`${key}SubtitleKa`]: e.target.value })} /></div>
-              <div className="form-group"><label className="form-label">{label} — English</label><textarea className="glass-input" rows={3} value={formFields[`${key}SubtitleEn`] || ''} onChange={(e) => setFormFields({ ...formFields, [`${key}SubtitleEn`]: e.target.value })} /></div>
+              <div className="form-group">
+                <label className="form-label">{label} — ქართული</label>
+                <textarea className="glass-input" rows={3} value={formFields[`${key}SubtitleKa`] || ''} onChange={(e) => setFormFields({ ...formFields, [`${key}SubtitleKa`]: e.target.value })} />
+                <EmojiToolbar onPick={(emoji) => setFormFields((previous: any) => ({ ...previous, [`${key}SubtitleKa`]: (previous[`${key}SubtitleKa`] || '') + emoji }))} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">{label} — English</label>
+                <textarea className="glass-input" rows={3} value={formFields[`${key}SubtitleEn`] || ''} onChange={(e) => setFormFields({ ...formFields, [`${key}SubtitleEn`]: e.target.value })} />
+                <EmojiToolbar onPick={(emoji) => setFormFields((previous: any) => ({ ...previous, [`${key}SubtitleEn`]: (previous[`${key}SubtitleEn`] || '') + emoji }))} />
+              </div>
             </div>
           ))}
 
@@ -1512,6 +1581,37 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     }
   }
 
+  function renderImageAltFields() {
+    return (
+      <div className="form-double-col image-alt-fields">
+        <div className="form-group">
+          <label className="form-label">{currentLang === 'ka' ? 'ფოტოს აღწერა ქართულად (Alt Text)' : 'Image Alt Text (Georgian)'}</label>
+          <input
+            type="text"
+            className="glass-input"
+            maxLength={255}
+            value={formFields.imageAltKa || ''}
+            onChange={(e) => setFormFields({ ...formFields, imageAltKa: e.target.value })}
+            placeholder="მაგ. კბილების გასწორება კერამიკული ბრეკეტებით — BelaDent"
+          />
+          <small className="field-help-text">{currentLang === 'ka' ? 'მოკლედ აღწერეთ ის, რაც რეალურად ჩანს ფოტოზე.' : 'Briefly describe what is actually visible in the image.'}</small>
+        </div>
+        <div className="form-group">
+          <label className="form-label">Image Alt Text (English)</label>
+          <input
+            type="text"
+            className="glass-input"
+            maxLength={255}
+            value={formFields.imageAltEn || ''}
+            onChange={(e) => setFormFields({ ...formFields, imageAltEn: e.target.value })}
+            placeholder="e.g. Ceramic braces orthodontic treatment at BelaDent"
+          />
+          <small className="field-help-text">{currentLang === 'ka' ? 'ინგლისურ გვერდზე გამოყენებული აღწერა.' : 'Used as the image description on the English page.'}</small>
+        </div>
+      </div>
+    );
+  }
+
   function renderModalFormFields() {
     if (activeTab === 'news' || activeTab === 'smile-gallery') {
       return (
@@ -1546,8 +1646,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               <input type="file" style={{ display: 'none' }} accept="image/*" required={activeTab === 'smile-gallery' && modalType === 'create'} onChange={(e) => setSelectedFile(e.target.files?.[0] || null)} />
               {selectedFile && <span className="upload-filename">{selectedFile.name}</span>}
             </label>
-            {formFields.imageUrl && !selectedFile && <div className="img-preview-box"><img src={getFullImageUrl(formFields.imageUrl)} alt="" className="table-thumb" /></div>}
+            {formFields.imageUrl && !selectedFile && <div className="img-preview-box"><img src={getFullImageUrl(formFields.imageUrl)} alt={currentLang === 'ka' ? (formFields.imageAltKa || formFields.titleKa || '') : (formFields.imageAltEn || formFields.titleEn || '')} className="table-thumb" /></div>}
           </div>
+          {renderImageAltFields()}
           <div className="form-group">
             <label className="checkbox-container-label">
               <input type="checkbox" className="custom-checkbox-input" checked={formFields.active ?? true} onChange={(e) => setFormFields({ ...formFields, active: e.target.checked })} />
@@ -1633,10 +1734,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             </label>
             {formFields.imageUrl && !selectedFile && (
               <div className="img-preview-box">
-                <img src={getFullImageUrl(formFields.imageUrl)} alt="" className="table-thumb" />
+                <img src={getFullImageUrl(formFields.imageUrl)} alt={currentLang === 'ka' ? (formFields.imageAltKa || formFields.titleKa || '') : (formFields.imageAltEn || formFields.titleEn || '')} className="table-thumb" />
               </div>
             )}
           </div>
+          {renderImageAltFields()}
 
           <div className="form-group">
             <label className="checkbox-container-label">
@@ -1773,10 +1875,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             </label>
             {formFields.imageUrl && !selectedFile && (
               <div className="img-preview-box">
-                <img src={getFullImageUrl(formFields.imageUrl)} alt="" className="table-thumb" />
+                <img src={getFullImageUrl(formFields.imageUrl)} alt={currentLang === 'ka' ? (formFields.imageAltKa || `${formFields.firstNameKa || ''} ${formFields.lastNameKa || ''}`.trim()) : (formFields.imageAltEn || `${formFields.firstNameEn || ''} ${formFields.lastNameEn || ''}`.trim())} className="table-thumb" />
               </div>
             )}
           </div>
+          {renderImageAltFields()}
 
           <div className="form-group">
             <label className="checkbox-container-label">
@@ -1843,10 +1946,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             </label>
             {formFields.imageUrl && !selectedFile && (
               <div className="img-preview-box">
-                <img src={getFullImageUrl(formFields.imageUrl)} alt="" className="table-thumb" />
+                <img src={getFullImageUrl(formFields.imageUrl)} alt={currentLang === 'ka' ? (formFields.imageAltKa || formFields.titleKa || '') : (formFields.imageAltEn || formFields.titleEn || '')} className="table-thumb" />
               </div>
             )}
           </div>
+          {renderImageAltFields()}
 
           <div className="form-group">
             <label className="checkbox-container-label">

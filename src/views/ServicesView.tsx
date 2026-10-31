@@ -18,13 +18,13 @@ export const ServicesView: React.FC<Props> = ({ currentLang, services, siteSetti
       <div className="listing-grid">
         {activeServices.length ? activeServices.map((service) => (
           <GlassCard key={service.id} className="listing-card" onClick={() => onNavigate(`service/${service.slug || service.id}`)}>
-            <div className="listing-image-wrap">{service.imageUrl ? <img src={getFullImageUrl(service.imageUrl)} alt={currentLang === "ka" ? service.titleKa : service.titleEn} /> : <div className="listing-fallback">🦷</div>}</div>
+            <div className="listing-image-wrap">{service.imageUrl ? <img src={getFullImageUrl(service.imageUrl)} alt={currentLang === "ka" ? (service.imageAltKa || service.titleKa) : (service.imageAltEn || service.titleEn)} /> : <div className="listing-fallback">🦷</div>}</div>
             <div className="listing-body"><h2>{currentLang === "ka" ? service.titleKa : service.titleEn}</h2><p>{richTextToPlainText(currentLang === "ka" ? service.descriptionKa : service.descriptionEn).slice(0, 150)}</p><span><Eye size={16} /> {currentLang === "ka" ? "მეტი" : "View more"}</span></div>
           </GlassCard>
         )) : <div className="empty-list"><Info size={34} />{currentLang === "ka" ? "სერვისები ჯერ არ არის დამატებული." : "No services added yet."}</div>}
       </div>
     </div><style>{`
-      .listing-page{min-height:80vh;padding:120px 24px 80px;background:var(--bg-color,#f8fafc)}.listing-container{max-width:1200px;margin:0 auto}.back-button{margin-bottom:34px}
+      .listing-page{min-height:80vh;padding:120px 24px 80px;background:var(--bg-app)}.listing-container{max-width:1200px;margin:0 auto}.back-button{margin-bottom:34px}
       .listing-header{text-align:center;max-width:720px;margin:0 auto 50px}.listing-header h1{font-size:clamp(2rem,4vw,3rem)}.listing-header p{color:var(--text-muted);margin-top:12px}
       .listing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px}.listing-card{padding:26px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;align-items:center;text-align:center}
       .listing-image-wrap{width:180px;height:180px;border-radius:20px;background:var(--primary-light);border:4px solid var(--primary-light);overflow:hidden;flex-shrink:0}

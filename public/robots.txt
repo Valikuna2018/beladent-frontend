@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /Security
+
+Sitemap: https://beladent.ge/sitemap.xml

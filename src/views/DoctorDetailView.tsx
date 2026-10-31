@@ -47,7 +47,7 @@ export const DoctorDetailView: React.FC<DoctorDetailViewProps> = ({ currentLang,
         <div className="doctor-profile-header">
           <div className="doctor-avatar-large">
             {doctor.imageUrl ? (
-              <img src={getFullImageUrl(doctor.imageUrl)} alt={name} />
+              <img src={getFullImageUrl(doctor.imageUrl)} alt={currentLang === 'ka' ? (doctor.imageAltKa || name) : (doctor.imageAltEn || name)} />
             ) : (
               <Stethoscope size={64} className="doctor-placeholder-icon" />
             )}

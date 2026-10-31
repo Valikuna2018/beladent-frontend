@@ -26,7 +26,7 @@ export const NewsDetailView: React.FC<Props> = ({ currentLang, newsId, news, onB
       <article className="news-detail-card glass-panel">
         <div className="news-profile-header">
           <div className="news-image-compact">
-            {item.imageUrl ? <img src={getFullImageUrl(item.imageUrl)} alt={title} /> : <Newspaper size={60} />}
+            {item.imageUrl ? <img src={getFullImageUrl(item.imageUrl)} alt={currentLang === 'ka' ? (item.imageAltKa || title) : (item.imageAltEn || title)} /> : <Newspaper size={60} />}
           </div>
           <div className="news-title-block">
             <h1>{title}</h1>

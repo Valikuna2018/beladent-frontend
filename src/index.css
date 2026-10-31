@@ -16,31 +16,31 @@
 
 :root {
   /* HSL Color Palette */
-  --primary-raw: 213 79% 38%;
-  --primary: #1557ad;                             /* Exact BelaDent Logo Blue */
-  --primary-hover: #10478f;
-  --primary-light: hsl(216 86% 95%);
+  --primary-raw: 45 56% 42%;
+  --primary: #a98b2f;                             /* BelaDent logo gold */
+  --primary-hover: #856c1f;
+  --primary-light: #f4eedc;
   
-  --accent-cyan-raw: 213 79% 38%;
-  --accent-cyan: #1557ad;
-  --accent-cyan-light: #eef5ff;
+  --accent-cyan-raw: 45 56% 42%;
+  --accent-cyan: #b29536;
+  --accent-cyan-light: #faf6ea;
 
   --accent-mint: hsl(152 68% 46%);        /* Fresh Mint Green */
   --accent-coral: hsl(12 88% 59%);        /* Gentle Coral for alerts */
 
-  --text-dark: #0f172a;                   /* Obsidian Grey */
-  --text-muted: #64748b;
-  --text-light: #f8fafc;
+  --text-dark: #2b261b;
+  --text-muted: #756d5d;
+  --text-light: #fffdf8;
 
   /* Custom Light Mode Tokens */
-  --bg-app: radial-gradient(120% 120% at 50% 10%, #f7fbff 0%, #e7f1ff 42%, #f8fafc 100%);
-  --card-bg: rgba(255, 255, 255, 0.45);
-  --card-border: rgba(255, 255, 255, 0.6);
-  --card-shadow: 0 8px 32px 0 rgba(20, 76, 168, 0.10), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  --bg-app: radial-gradient(120% 120% at 50% 10%, #fffdf8 0%, #f4eddf 45%, #fbf8f1 100%);
+  --card-bg: rgba(255, 253, 248, 0.72);
+  --card-border: rgba(169, 139, 47, 0.16);
+  --card-shadow: 0 8px 32px 0 rgba(126, 101, 31, 0.12), 0 1px 2px 0 rgba(43, 38, 27, 0.03);
   --glass-blur: blur(16px);
-  --input-bg: rgba(255, 255, 255, 0.6);
-  --input-border: rgba(148, 163, 184, 0.25);
-  --scrollbar-thumb: rgba(20, 76, 168, 0.24);
+  --input-bg: rgba(255, 253, 248, 0.78);
+  --input-border: rgba(169, 139, 47, 0.24);
+  --scrollbar-thumb: rgba(169, 139, 47, 0.34);
 
   /* Fonts */
   --font-heading: 'BPG Nino Medium', 'Segoe UI', sans-serif;
@@ -69,20 +69,20 @@ html[lang='en'] h6 {
 
 /* Custom Dark Mode Class (applied to body/root for admin layout or togglable settings) */
 .dark-theme {
-  --primary-raw: 213 79% 38%;
-  --primary: #1557ad;
-  --primary-hover: #246bc4;
-  --primary-light: rgba(21, 87, 173, 0.18);
+  --primary-raw: 45 56% 42%;
+  --primary: #b99a3e;
+  --primary-hover: #d0b35a;
+  --primary-light: rgba(185, 154, 62, 0.18);
 
-  --accent-cyan-raw: 213 79% 38%;
-  --accent-cyan: #1557ad;
+  --accent-cyan-raw: 45 56% 42%;
+  --accent-cyan: #c2a34a;
 
   --text-dark: #f8fafc;
   --text-muted: #94a3b8;
   --text-light: #0f172a;
 
-  --bg-app: radial-gradient(125% 125% at 50% 10%, #030712 0%, #0b1528 50%, #020617 100%);
-  --card-bg: rgba(15, 23, 42, 0.65);
+  --bg-app: radial-gradient(125% 125% at 50% 10%, #211c11 0%, #15120c 52%, #0d0b07 100%);
+  --card-bg: rgba(35, 29, 17, 0.72);
   --card-border: rgba(255, 255, 255, 0.07);
   --card-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.03);
   --input-bg: rgba(7, 12, 26, 0.5);
@@ -185,7 +185,7 @@ a:hover {
 
 .glass-panel-hover:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 40px 0 rgba(14, 116, 144, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 40px 0 rgba(126, 101, 31, 0.16), 0 1px 3px 0 rgba(43, 38, 27, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
@@ -208,7 +208,7 @@ a:hover {
 }
 .glass-input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(14, 116, 144, 0.15);
+  box-shadow: 0 0 0 4px rgba(169, 139, 47, 0.18);
   background: rgba(255, 255, 255, 0.9);
 }
 .dark-theme .glass-input:focus {
@@ -245,11 +245,11 @@ a:hover {
 .btn-primary {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
   color: white;
-  box-shadow: 0 4px 14px 0 rgba(14, 116, 144, 0.35);
+  box-shadow: 0 4px 14px 0 rgba(133, 108, 31, 0.32);
 }
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px 0 rgba(14, 116, 144, 0.5);
+  box-shadow: 0 6px 20px 0 rgba(133, 108, 31, 0.44);
   filter: brightness(1.1);
 }
 .btn-primary:active {
@@ -305,8 +305,8 @@ a:hover {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(14, 116, 144, 0.4); }
-  50% { box-shadow: 0 0 15px 4px rgba(14, 116, 144, 0.2); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(169, 139, 47, 0.4); }
+  50% { box-shadow: 0 0 15px 4px rgba(169, 139, 47, 0.22); }
 }
 .pulse-glow {
   animation: pulse-glow 2s infinite ease-in-out;

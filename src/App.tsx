@@ -10,6 +10,7 @@ import { ServiceDetailView } from './views/ServiceDetailView';
 import { DoctorDetailView } from './views/DoctorDetailView';
 import { VacancyDetailView } from './views/VacancyDetailView';
 import { ServicesView } from './views/ServicesView';
+import { DoctorsView } from './views/DoctorsView';
 import { NewsView } from './views/NewsView';
 import { NewsDetailView } from './views/NewsDetailView';
 import { VacanciesView } from './views/VacanciesView';
@@ -219,6 +220,17 @@ function App() {
           currentLang={lang}
           doctorId={activeSection.split('/')[1]}
           doctors={doctors}
+          onBack={() => setActiveSection('doctors')}
+        />
+      ) : activeSection === 'doctors' ? (
+        <DoctorsView
+          currentLang={lang}
+          doctors={doctors}
+          siteSettings={siteSettings}
+          onNavigate={(path) => {
+            setActiveSection(path);
+            window.scrollTo(0, 0);
+          }}
           onBack={() => setActiveSection('home')}
         />
       ) : activeSection.startsWith('news/') ? (

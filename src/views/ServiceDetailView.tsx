@@ -44,7 +44,7 @@ export const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({ currentLan
         <div className="service-profile-header">
           <div className="service-avatar">
             {service.imageUrl ? (
-              <img src={getFullImageUrl(service.imageUrl)} alt={title} />
+              <img src={getFullImageUrl(service.imageUrl)} alt={currentLang === 'ka' ? (service.imageAltKa || title) : (service.imageAltEn || title)} />
             ) : (
               <Stethoscope size={60} className="service-placeholder-icon" />
             )}

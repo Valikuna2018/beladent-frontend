@@ -74,8 +74,8 @@ export const PublicView: React.FC<PublicViewProps> = ({
   if (loading) {
     return (
       <div style={{ display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"100vh" }}>
-        <div style={{ width:60,height:60,border:"4px solid #e2f4f4",borderTop:"4px solid #0e4f50",borderRadius:"50%",animation:"spin 1s linear infinite" }}></div>
-        <p style={{ marginTop:20,fontWeight:500,color:"#0e4f50" }}>{t.loading}</p>
+        <div style={{ width:60,height:60,border:"4px solid #f4eedc",borderTop:"4px solid #a98b2f",borderRadius:"50%",animation:"spin 1s linear infinite" }}></div>
+        <p style={{ marginTop:20,fontWeight:500,color:"#856c1f" }}>{t.loading}</p>
         <style>{`@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}`}</style>
       </div>
     );
@@ -149,7 +149,7 @@ export const PublicView: React.FC<PublicViewProps> = ({
             <GlassCard key={service.id} className="service-card" onClick={() => onNavigate('service/' + (service.slug || service.id))}>
               <div className="card-image-box">
                 {service.imageUrl ? (
-                  <img src={getFullImageUrl(service.imageUrl)} alt={currentLang === "ka" ? service.titleKa : service.titleEn} className="card-img" />
+                  <img src={getFullImageUrl(service.imageUrl)} alt={currentLang === "ka" ? (service.imageAltKa || service.titleKa) : (service.imageAltEn || service.titleEn)} className="card-img" />
                 ) : (
                   <div className="card-image-fallback">🦷</div>
                 )}
@@ -238,7 +238,7 @@ export const PublicView: React.FC<PublicViewProps> = ({
             <GlassCard key={doctor.id} className="doctor-card" style={{ cursor: 'pointer' }} onClick={() => onNavigate('doctor/' + (doctor.slug || doctor.id))}>
               <div className="doctor-img-wrap">
                 {doctor.imageUrl
-                  ? <img src={getFullImageUrl(doctor.imageUrl)} alt="" className="doctor-img" />
+                  ? <img src={getFullImageUrl(doctor.imageUrl)} alt={currentLang === "ka" ? (doctor.imageAltKa || `${doctor.firstNameKa || ''} ${doctor.lastNameKa || ''}`.trim()) : (doctor.imageAltEn || `${doctor.firstNameEn || ''} ${doctor.lastNameEn || ''}`.trim())} className="doctor-img" />
                   : <div className="doctor-fallback">🧑‍⚕️</div>}
               </div>
               <div className="doctor-info">
@@ -309,7 +309,7 @@ export const PublicView: React.FC<PublicViewProps> = ({
         .carousel-arrow { width: 50px; height: 50px; border: 1px solid rgba(255,255,255,.45); border-radius: 50%; display: grid; place-items: center; cursor: pointer; transition: transform .2s, background .2s; z-index: 4; }
         .carousel-arrow:hover { transform: scale(1.08); }
         .hero-arrow { position: absolute; top: 50%; transform: translateY(-50%); color: white; background: rgba(15,23,42,.32); backdrop-filter: blur(8px); }
-        .hero-arrow:hover { transform: translateY(-50%) scale(1.08); background: rgba(20,76,168,.88); }
+        .hero-arrow:hover { transform: translateY(-50%) scale(1.08); background: rgba(133,108,31,.92); }
         .hero-arrow.left { left: 28px; } .hero-arrow.right { right: 28px; }
         .hero-dots { position: absolute; z-index: 4; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; gap: 9px; }
         .hero-dots button { width: 9px; height: 9px; padding: 0; border: 0; border-radius: 50%; background: rgba(255,255,255,.45); cursor: pointer; transition: width .25s, background .25s; }
@@ -327,23 +327,23 @@ export const PublicView: React.FC<PublicViewProps> = ({
         .services-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(320px,1fr)); gap: 28px; }
         @media (max-width: 576px) { .services-grid { grid-template-columns: 1fr; } }
         .service-card { cursor: pointer; overflow: hidden; padding: 0; display: flex; flex-direction: column; }
-        .card-image-box { position: relative; height: 210px; overflow: hidden; background: rgba(14,116,144,0.05); }
+        .card-image-box { position: relative; height: 210px; overflow: hidden; background: rgba(169,139,47,0.08); }
         .card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s cubic-bezier(0.4,0,0.2,1); }
         .service-card:hover .card-img { transform: scale(1.07); }
         .card-image-fallback { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; font-size: 54px; }
-        .img-overlay-blur { position: absolute; inset: 0; background: rgba(14,79,80,0.3); display: flex; align-items: center; justify-content: center; opacity: 0; backdrop-filter: blur(3px); transition: opacity 0.3s ease; }
+        .img-overlay-blur { position: absolute; inset: 0; background: rgba(92,73,22,0.34); display: flex; align-items: center; justify-content: center; opacity: 0; backdrop-filter: blur(3px); transition: opacity 0.3s ease; }
         .service-card:hover .img-overlay-blur { opacity: 1; }
         .view-details-tag { background: white; color: var(--primary); padding: 8px 16px; border-radius: 99px; font-family: var(--font-heading); font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
         .card-body { padding: 22px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
         .card-title { font-size: 1.2rem; color: var(--text-dark); }
         .card-description-snippet { font-size: 0.92rem; line-height: 1.5; color: var(--text-muted); }
-        .about-full-section { background: linear-gradient(135deg,hsl(216 86% 97%) 0%,hsl(198 90% 97%) 100%); padding: 90px 24px; }
+        .about-full-section { background: linear-gradient(135deg,#fffaf0 0%,#f2e8d2 100%); padding: 90px 24px; }
         .about-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center; }
         @media (max-width: 900px) { .about-inner { grid-template-columns: 1fr; gap: 40px; } }
         .about-visual-panel { display: flex; justify-content: center; }
-        .about-image-box { width: 100%; max-width: 450px; aspect-ratio: 4 / 3; border-radius: 24px; overflow: hidden; background: var(--primary-light); box-shadow: 0 20px 50px rgba(20,76,168,0.20); }
+        .about-image-box { width: 100%; max-width: 450px; aspect-ratio: 4 / 3; border-radius: 24px; overflow: hidden; background: var(--primary-light); box-shadow: 0 20px 50px rgba(126,101,31,0.20); }
         .about-image { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
-        .about-stat-box { width: 100%; max-width: 360px; padding: 60px 40px; border-radius: 24px; background: linear-gradient(135deg,var(--primary) 0%,hsl(216 82% 25%) 100%); color: white; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; box-shadow: 0 20px 50px rgba(20,76,168,0.22); }
+        .about-stat-box { width: 100%; max-width: 360px; padding: 60px 40px; border-radius: 24px; background: linear-gradient(135deg,var(--primary) 0%,#665219 100%); color: white; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; box-shadow: 0 20px 50px rgba(126,101,31,0.24); }
         .about-big-num { font-family: var(--font-heading); font-weight: 800; font-size: 5rem; line-height: 1; }
         .about-big-label { font-family: var(--font-heading); font-weight: 600; font-size: 1.15rem; }
         .about-cyan-tag { font-size: 0.9rem; color: var(--accent-cyan); font-weight: 500; letter-spacing: 0.04em; }
@@ -358,17 +358,17 @@ export const PublicView: React.FC<PublicViewProps> = ({
         .partners-carousel { position:relative; padding:0 64px; }
         .partners-track { display:flex; gap:18px; overflow-x:auto; scroll-behavior:smooth; scroll-snap-type:x mandatory; scrollbar-width:none; padding:10px 4px 14px; }
         .partners-track::-webkit-scrollbar { display:none; }
-        .partner-card { flex:0 0 200px; height:150px; padding:20px; border:1px solid rgba(20,76,168,.1); border-radius:20px; background:rgba(255,255,255,.82); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; scroll-snap-align:start; box-shadow:0 10px 28px rgba(30,64,175,.07); transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease; }
-        .partner-card:hover { transform:translateY(-4px); border-color:rgba(20,76,168,.25); box-shadow:0 16px 34px rgba(30,64,175,.12); }
+        .partner-card { flex:0 0 200px; height:150px; padding:20px; border:1px solid rgba(169,139,47,.14); border-radius:20px; background:rgba(255,253,248,.88); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; scroll-snap-align:start; box-shadow:0 10px 28px rgba(126,101,31,.09); transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease; }
+        .partner-card:hover { transform:translateY(-4px); border-color:rgba(169,139,47,.34); box-shadow:0 16px 34px rgba(126,101,31,.15); }
         .partner-card img { width:150px; max-width:100%; height:82px; object-fit:contain; display:block; }
         .partner-card span { color:var(--text-dark); font-weight:650; font-size:.9rem; line-height:1.2; text-align:center; }
-        .partner-arrow { position:absolute; top:50%; transform:translateY(-58%); color:var(--primary); background:rgba(255,255,255,.94); border-color:rgba(20,76,168,.18); box-shadow:0 8px 24px rgba(15,23,42,.12); }
+        .partner-arrow { position:absolute; top:50%; transform:translateY(-58%); color:var(--primary); background:rgba(255,253,248,.96); border-color:rgba(169,139,47,.22); box-shadow:0 8px 24px rgba(43,38,27,.12); }
         .partner-arrow:hover { transform:translateY(-58%) scale(1.07); background:var(--primary); color:white; }
         .partner-arrow.left { left:2px; }
         .partner-arrow.right { right:2px; }
         .doctors-grid { display: flex; gap: 28px; overflow-x: auto; padding: 4px; scroll-snap-type: x mandatory; scrollbar-width: none; }
         .doctors-grid::-webkit-scrollbar { display: none; }
-        .doctor-arrow { position: absolute; top: 50%; transform: translateY(-50%); color: var(--primary); background: white; border-color: rgba(14,116,144,.2); box-shadow: 0 8px 24px rgba(15,23,42,.13); }
+        .doctor-arrow { position: absolute; top: 50%; transform: translateY(-50%); color: var(--primary); background: #fffdf8; border-color: rgba(169,139,47,.24); box-shadow: 0 8px 24px rgba(43,38,27,.13); }
         .doctor-arrow:hover { transform: translateY(-50%) scale(1.08); background: var(--primary); color: white; }
         .doctor-arrow.left { left: 0; } .doctor-arrow.right { right: 0; }
         .doctor-card { overflow: hidden; padding: 0; display: flex; flex-direction: column; flex: 0 0 min(260px, 76vw); scroll-snap-align: start; }
@@ -391,9 +391,7 @@ export const PublicView: React.FC<PublicViewProps> = ({
         .contact-info-col { display: flex; flex-direction: column; gap: 16px; }
         .contact-info-card { display: flex; align-items: center; gap: 18px; padding: 20px 24px; }
         .contact-icon-wrap { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .phone-icon { background: rgba(14,116,144,0.1); color: var(--primary); }
-        .mail-icon { background: rgba(14,165,233,0.1); color: #0ea5e9; }
-        .map-icon { background: rgba(16,185,129,0.1); color: #10b981; }
+        .phone-icon, .mail-icon, .map-icon { background: rgba(169,139,47,0.12); color: var(--primary); }
         .contact-card-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
         .contact-card-value { display: block; font-family: var(--font-heading); font-weight: 600; font-size: 1.05rem; color: var(--text-dark); transition: color 0.2s ease; }
         .contact-card-value:hover { color: var(--primary); }

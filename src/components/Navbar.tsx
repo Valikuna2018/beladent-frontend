@@ -57,6 +57,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     
     if (
       section === 'services' ||
+      section === 'doctors' ||
       section === 'news' ||
       section === 'vacancies' ||
       section.startsWith('service/') ||
@@ -311,15 +312,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           width: 100%;
           height: 80px;
           z-index: 999;
-          background: #ffffff;
-          border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+          background: #fffdf8;
+          border-bottom: 1px solid rgba(169, 139, 47, 0.14);
           transition: all 0.3s ease;
         }
 
         .main-nav.scrolled {
-          background: #ffffff;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-          border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+          background: rgba(255, 253, 248, 0.96);
+          box-shadow: 0 4px 20px rgba(126, 101, 31, 0.09);
+          border-bottom: 1px solid rgba(169, 139, 47, 0.16);
         }
 
         .dark-theme .main-nav {
@@ -368,9 +369,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           font-family: var(--font-heading);
           font-weight: 700;
           font-size: 1.38rem;
-          color: #1557ad;
+          color: var(--primary);
           background: none;
-          -webkit-text-fill-color: #1557ad;
+          -webkit-text-fill-color: var(--primary);
           white-space: nowrap;
           letter-spacing: 0;
           line-height: 1;
@@ -455,7 +456,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         .nav-link-btn:hover {
           color: var(--primary);
-          background: rgba(14, 116, 144, 0.06);
+          background: rgba(169, 139, 47, 0.10);
         }
 
         .nav-link-btn.active {
@@ -501,7 +502,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           transition: all 0.2s ease;
         }
         .btn-toolbar:hover {
-          background: rgba(255, 255, 255, 0.9);
+          background: rgba(255, 253, 248, 0.96);
           border-color: var(--primary);
           color: var(--primary);
         }

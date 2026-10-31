@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: beladent-frontend
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    domains:
+      - beladent.ge
+      - www.beladent.ge
+    envVars:
+      - key: VITE_API_URL
+        value: https://api.beladent.ge
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
