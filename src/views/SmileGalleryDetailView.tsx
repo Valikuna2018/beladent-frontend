@@ -17,7 +17,7 @@ export const SmileGalleryDetailView: React.FC<Props> = ({ currentLang, itemId, i
   const title = currentLang === 'ka' ? item.titleKa : item.titleEn;
   const text = currentLang === 'ka' ? item.textKa : item.textEn;
   return <main className="smile-detail-page animate-fade-in">
-    <button className="smile-detail-back site-back-button" onClick={onBack}><ArrowLeft size={19} />{currentLang === 'ka' ? 'გალერეაზე დაბრუნება' : 'Back to gallery'}</button>
+    <button className="smile-detail-back site-back-button" onClick={onBack}><ArrowLeft size={19} />{currentLang === 'ka' ? 'უკან' : 'Back'}</button>
     <article className="smile-detail-card">
       <div className="smile-detail-image">{item.imageUrl ? <img src={getFullImageUrl(item.imageUrl)} alt={currentLang === 'ka' ? (item.imageAltKa || title) : (item.imageAltEn || title)} /> : <ImageIcon size={64} />}</div>
       <div className="smile-detail-copy"><h1>{title}</h1><span className="smile-detail-accent" />{text && <RichTextContent className="smile-detail-text" html={text} />}</div>

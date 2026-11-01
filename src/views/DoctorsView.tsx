@@ -4,7 +4,6 @@ import type { Language } from '../i18n/translations';
 import { translations } from '../i18n/translations';
 import { GlassCard } from '../components/GlassCard';
 import { getFullImageUrl } from '../services/api';
-import { richTextToPlainText } from '../components/RichText';
 
 interface Props {
   currentLang: Language;
@@ -42,7 +41,6 @@ export const DoctorsView: React.FC<Props> = ({ currentLang, doctors, siteSetting
                 ? `${doctor.firstNameKa || ''} ${doctor.lastNameKa || ''}`.trim()
                 : `${doctor.firstNameEn || ''} ${doctor.lastNameEn || ''}`.trim();
               const specialization = currentLang === 'ka' ? doctor.specializationKa : doctor.specializationEn;
-              const description = richTextToPlainText(currentLang === 'ka' ? doctor.descriptionKa : doctor.descriptionEn);
 
               return (
                 <GlassCard
@@ -60,8 +58,7 @@ export const DoctorsView: React.FC<Props> = ({ currentLang, doctors, siteSetting
                   <div className="doctor-list-copy">
                     <h2>{name}</h2>
                     {specialization && <span className="doctor-specialization">{specialization}</span>}
-                    {description && <p>{description.slice(0, 135)}{description.length > 135 ? '…' : ''}</p>}
-                    <strong><Eye size={17} /> {currentLang === 'ka' ? 'სრულად' : 'View more'}</strong>
+                    <strong className="read-more-link"><Eye size={17} /> {currentLang === 'ka' ? 'ვრცლად' : 'View more'}</strong>
                   </div>
                 </GlassCard>
               );

@@ -16,7 +16,7 @@ export const VacanciesView: React.FC<Props> = ({ currentLang, vacancies, siteSet
       const position = currentLang === "ka" ? item.positionKa : item.positionEn;
       const body = richTextToPlainText(currentLang === "ka" ? item.descriptionKa : item.descriptionEn);
       return <GlassCard key={item.id} className="vacancy-row" onClick={() => onNavigate(`vacancy/${item.id}`)}>
-        <div className="vacancy-icon"><Briefcase size={34} /></div><div className="vacancy-copy"><span className="vacancy-position">{position}</span><h2>{title}</h2><p>{body?.slice(0, 180)}{body?.length > 180 ? "…" : ""}</p><strong>{currentLang === "ka" ? "სრულად" : "View vacancy"} <ArrowRight size={17} /></strong></div>
+        <div className="vacancy-icon"><Briefcase size={34} /></div><div className="vacancy-copy"><span className="vacancy-position">{position}</span><h2>{title}</h2><p>{body?.slice(0, 180)}{body?.length > 180 ? "…" : ""}</p><strong className="read-more-link">{currentLang === "ka" ? "ვრცლად" : "View more"} <ArrowRight size={17} /></strong></div>
       </GlassCard>;
     }) : <div className="vacancies-empty"><Info size={34} />{currentLang === "ka" ? "ამჟამად ვაკანსიები არ არის." : "No vacancies at the moment."}</div>}</div>
   </div><style>{`

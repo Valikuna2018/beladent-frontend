@@ -19,6 +19,11 @@ interface FooterProps {
   googleMapsUrl?: string;
   mondaySaturdayOpen?: string;
   mondaySaturdayClose?: string;
+  mondayFridayOpen?: string;
+  mondayFridayClose?: string;
+  saturdayOpen?: string;
+  saturdayClose?: string;
+  saturdayClosed?: boolean;
   sundayOpen?: string;
   sundayClose?: string;
   sundayClosed?: boolean;
@@ -41,6 +46,11 @@ export const Footer: React.FC<FooterProps> = ({
   googleMapsUrl,
   mondaySaturdayOpen = '10:00',
   mondaySaturdayClose = '20:00',
+  mondayFridayOpen,
+  mondayFridayClose,
+  saturdayOpen,
+  saturdayClose,
+  saturdayClosed = false,
   sundayOpen = '10:00',
   sundayClose = '18:00',
   sundayClosed = true,
@@ -49,13 +59,18 @@ export const Footer: React.FC<FooterProps> = ({
 }) => {
   const t = translations[currentLang];
   const currentYear = new Date().getFullYear();
-  const weekOpen = mondaySaturdayOpen || '10:00';
-  const weekClose = mondaySaturdayClose || '20:00';
+  const weekOpen = mondayFridayOpen || mondaySaturdayOpen || '10:00';
+  const weekClose = mondayFridayClose || mondaySaturdayClose || '20:00';
+  const satOpen = saturdayOpen || mondaySaturdayOpen || '10:00';
+  const satClose = saturdayClose || mondaySaturdayClose || '20:00';
   const sunOpen = sundayOpen || '10:00';
   const sunClose = sundayClose || '18:00';
-  const mondaySaturdayLabel = currentLang === 'ka'
-    ? `ორშაბათი - შაბათი: ${weekOpen} - ${weekClose}`
-    : `Monday - Saturday: ${weekOpen} - ${weekClose}`;
+  const mondayFridayLabel = currentLang === 'ka'
+    ? `ორშაბათი - პარასკევი: ${weekOpen} - ${weekClose}`
+    : `Monday - Friday: ${weekOpen} - ${weekClose}`;
+  const saturdayLabel = saturdayClosed
+    ? (currentLang === 'ka' ? 'შაბათი: დასვენება' : 'Saturday: Closed')
+    : (currentLang === 'ka' ? `შაბათი: ${satOpen} - ${satClose}` : `Saturday: ${satOpen} - ${satClose}`);
   const sundayLabel = sundayClosed
     ? (currentLang === 'ka' ? 'კვირა: დასვენება' : 'Sunday: Closed')
     : (currentLang === 'ka'
@@ -190,7 +205,11 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="working-hours-list">
             <div className="hours-item">
               <Clock size={16} />
-              <span>{mondaySaturdayLabel}</span>
+              <span>{mondayFridayLabel}</span>
+            </div>
+            <div className="hours-row">
+              <Clock size={18} />
+              <span>{saturdayLabel}</span>
             </div>
             <div className="hours-item">
               <Clock size={16} />

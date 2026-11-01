@@ -18,6 +18,33 @@ import { SmileGalleryView } from './views/SmileGalleryView';
 import { SmileGalleryDetailView } from './views/SmileGalleryDetailView';
 import type { Language } from './i18n/translations';
 import { publicApi, getAuthToken, clearSession } from './services/api';
+import { richTextToPlainText } from './components/RichText';
+
+const sectionFromPath = (pathname: string) => {
+  const clean = decodeURIComponent(pathname).replace(/^\/+|\/+$/g, '');
+  if (!clean) return 'home';
+  if (clean.toLowerCase() === 'security') return 'login';
+  const [page, id] = clean.split('/');
+  const map: Record<string, string> = {
+    services: 'services', doctors: 'doctors', news: 'news', vacancies: 'vacancies',
+    'smile-gallery': 'smile-gallery', about: 'about', contact: 'contact'
+  };
+  const section = map[page];
+  const detail: Record<string, string> = { services: 'service', doctors: 'doctor', news: 'news', vacancies: 'vacancy', 'smile-gallery': 'smile-gallery' };
+  return section ? (id ? `${detail[section] || section}/${id}` : section) : 'home';
+};
+
+const pathFromSection = (section: string) => {
+  if (section === 'home') return '/';
+  if (section === 'login' || section === 'dashboard') return '/Security';
+  const [page, id] = section.split('/');
+  const plural: Record<string, string> = { service: 'services', doctor: 'doctors', vacancy: 'vacancies' };
+  return `/${plural[page] || page}${id ? `/${encodeURIComponent(id)}` : ''}`;
+};
+
+const sortByOrder = (items: any[] = []) => [...items].sort((a, b) =>
+  (Number(a?.sortOrder) || 0) - (Number(b?.sortOrder) || 0) || (Number(a?.id) || 0) - (Number(b?.id) || 0)
+);
 
 function App() {
   const [lang, setLang] = useState<Language>(() => {
@@ -25,7 +52,7 @@ function App() {
     return (saved as Language) || 'ka';
   });
 
-  const [activeSection, setActiveSection] = useState<string>('home');
+  const [activeSection, setActiveSection] = useState<string>(() => sectionFromPath(window.location.pathname));
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isAdminView, setAdminView] = useState<boolean>(false);
 
@@ -61,17 +88,30 @@ function App() {
     setToast({ message, type });
   };
 
+  const navigateTo = (section: string, replace = false) => {
+    const path = pathFromSection(section);
+    const method = replace ? 'replaceState' : 'pushState';
+    window.history[method]({ beladent: true, section }, '', path);
+    setActiveSection(section);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const goBack = (fallback: string) => {
+    if (window.history.state?.beladent) window.history.back();
+    else navigateTo(fallback, true);
+  };
+
   const handleLoginSuccess = () => {
     setIsAdmin(true);
     setAdminView(true); // Jump directly into CMS Console
-    setActiveSection('dashboard');
+    navigateTo('dashboard', true);
   };
 
   const handleLogout = () => {
     clearSession();
     setIsAdmin(false);
     setAdminView(false);
-    setActiveSection('home');
+    navigateTo('home', true);
     showToast(
       lang === 'ka' ? 'წარმატებით გამოხვედით მართვის პანელიდან' : 'Logged out of CMS successfully',
       'info'
@@ -96,12 +136,12 @@ function App() {
       setSiteSettings(settingsData);
       setAbout(aboutData);
       setContactInfo(contactData);
-      setServices(servicesData || []);
-      setDoctors(doctorsData || []);
-      setPartners(partnersData || []);
+      setServices(sortByOrder(servicesData || []));
+      setDoctors(sortByOrder(doctorsData || []));
+      setPartners(sortByOrder(partnersData || []));
       setVacancies(vacanciesData || []);
-      setNews(newsData || []);
-      setSmileGallery(smileGalleryData || []);
+      setNews(sortByOrder(newsData || []));
+      setSmileGallery(sortByOrder(smileGalleryData || []));
 
       // Update HTML metadata dynamically
       const activeTitle = lang === 'ka'
@@ -135,11 +175,12 @@ function App() {
     }
 
     // Secret admin login URL
-    if (window.location.pathname === '/Security') {
-      setActiveSection('login');
-    }
+    window.history.replaceState({ beladent: true, section: sectionFromPath(window.location.pathname) }, '', window.location.href);
+    const onPopState = () => setActiveSection(sectionFromPath(window.location.pathname));
+    window.addEventListener('popstate', onPopState);
 
     loadAllPublicData(true);
+    return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
   // Sync title updates if language changes
@@ -152,6 +193,55 @@ function App() {
       document.title = activeTitle;
     }
   }, [lang, siteSettings]);
+
+  useEffect(() => {
+    const detailId = activeSection.split('/')[1];
+    const pick = (items: any[]) => items.find((item) => String(item.id) === detailId || item.slug === detailId);
+    const entity = activeSection.startsWith('service/') ? pick(services)
+      : activeSection.startsWith('doctor/') ? pick(doctors)
+      : activeSection.startsWith('news/') ? pick(news)
+      : activeSection.startsWith('vacancy/') ? pick(vacancies)
+      : activeSection.startsWith('smile-gallery/') ? pick(smileGallery) : null;
+    const clinic = lang === 'ka' ? (siteSettings?.clinicNameKa || 'ბელა დენტი') : (siteSettings?.clinicNameEn || 'BelaDent');
+    const listTitles: Record<string, string> = lang === 'ka'
+      ? { services: 'სერვისები', doctors: 'ექიმები', news: 'სიახლეები', vacancies: 'ვაკანსიები', 'smile-gallery': 'ღიმილის გალერეა', about: 'ჩვენ შესახებ', contact: 'კონტაქტი' }
+      : { services: 'Services', doctors: 'Doctors', news: 'News', vacancies: 'Vacancies', 'smile-gallery': 'Smile Gallery', about: 'About Us', contact: 'Contact' };
+    const entityTitle = entity && (activeSection.startsWith('doctor/')
+      ? `${lang === 'ka' ? entity.firstNameKa : entity.firstNameEn} ${lang === 'ka' ? entity.lastNameKa : entity.lastNameEn}`.trim()
+      : (lang === 'ka' ? entity.titleKa : entity.titleEn));
+    const title = entityTitle ? `${entityTitle} | ${clinic}`
+      : activeSection === 'home' ? (lang === 'ka' ? siteSettings?.seoTitleKa : siteSettings?.seoTitleEn) || clinic
+      : `${listTitles[activeSection] || clinic} | ${clinic}`;
+    const rawDescription = entity && (activeSection.startsWith('doctor/')
+      ? (lang === 'ka' ? entity.specializationKa : entity.specializationEn)
+      : (lang === 'ka' ? (entity.shortDescriptionKa || entity.descriptionKa || entity.textKa) : (entity.shortDescriptionEn || entity.descriptionEn || entity.textEn)));
+    const description = richTextToPlainText(rawDescription || (lang === 'ka' ? siteSettings?.seoDescriptionKa : siteSettings?.seoDescriptionEn) || clinic).slice(0, 160);
+    document.title = title;
+    const setMeta = (selector: string, attribute: string, value: string) => {
+      let element = document.head.querySelector(selector) as HTMLMetaElement | HTMLLinkElement | null;
+      if (!element) {
+        element = document.createElement(selector.startsWith('link') ? 'link' : 'meta');
+        if (selector === 'meta[name="description"]') element.setAttribute('name', 'description');
+        if (selector === 'meta[property="og:title"]') element.setAttribute('property', 'og:title');
+        if (selector === 'meta[property="og:description"]') element.setAttribute('property', 'og:description');
+        if (selector === 'meta[property="og:url"]') element.setAttribute('property', 'og:url');
+        if (selector.startsWith('link')) element.setAttribute('rel', 'canonical');
+        document.head.appendChild(element);
+      }
+      element.setAttribute(attribute, value);
+    };
+    setMeta('meta[name="description"]', 'content', description);
+    setMeta('meta[property="og:title"]', 'content', title);
+    setMeta('meta[property="og:description"]', 'content', description);
+    setMeta('meta[property="og:url"]', 'content', window.location.href);
+    setMeta('link[rel="canonical"]', 'href', window.location.href);
+  }, [activeSection, lang, siteSettings, services, doctors, news, vacancies, smileGallery]);
+
+  useEffect(() => {
+    if (activeSection === 'about' || activeSection === 'contact') {
+      window.setTimeout(() => document.getElementById(activeSection)?.scrollIntoView({ behavior: 'smooth' }), 50);
+    }
+  }, [activeSection]);
 
   // General clinic info resolvers
   const clinicName = siteSettings
@@ -173,7 +263,7 @@ function App() {
         currentLang={lang}
         setLang={handleSetLang}
         activeSection={activeSection}
-        setActiveSection={setActiveSection}
+        setActiveSection={navigateTo}
         isAdmin={isAdmin}
         isAdminView={isAdminView}
         setAdminView={setAdminView}
@@ -202,7 +292,7 @@ function App() {
           currentLang={lang}
           serviceId={activeSection.split('/')[1]}
           services={services}
-          onBack={() => setActiveSection('services')}
+          onBack={() => goBack('services')}
         />
       ) : activeSection === 'services' ? (
         <ServicesView
@@ -210,17 +300,16 @@ function App() {
           services={services}
           siteSettings={siteSettings}
           onNavigate={(path) => {
-            setActiveSection(path);
-            window.scrollTo(0, 0);
+            navigateTo(path);
           }}
-          onBack={() => setActiveSection('home')}
+          onBack={() => goBack('home')}
         />
       ) : activeSection.startsWith('doctor/') ? (
         <DoctorDetailView
           currentLang={lang}
           doctorId={activeSection.split('/')[1]}
           doctors={doctors}
-          onBack={() => setActiveSection('doctors')}
+          onBack={() => goBack('doctors')}
         />
       ) : activeSection === 'doctors' ? (
         <DoctorsView
@@ -228,17 +317,16 @@ function App() {
           doctors={doctors}
           siteSettings={siteSettings}
           onNavigate={(path) => {
-            setActiveSection(path);
-            window.scrollTo(0, 0);
+            navigateTo(path);
           }}
-          onBack={() => setActiveSection('home')}
+          onBack={() => goBack('home')}
         />
       ) : activeSection.startsWith('news/') ? (
         <NewsDetailView
           currentLang={lang}
           newsId={activeSection.split('/')[1]}
           news={news}
-          onBack={() => setActiveSection('news')}
+          onBack={() => goBack('news')}
         />
       ) : activeSection === 'news' ? (
         <NewsView
@@ -246,17 +334,16 @@ function App() {
           news={news}
           siteSettings={siteSettings}
           onNavigate={(path) => {
-            setActiveSection(path);
-            window.scrollTo(0, 0);
+            navigateTo(path);
           }}
-          onBack={() => setActiveSection('home')}
+          onBack={() => goBack('home')}
         />
       ) : activeSection.startsWith('vacancy/') ? (
         <VacancyDetailView
           currentLang={lang}
           vacancyId={activeSection.split('/')[1]}
           vacancies={vacancies}
-          onBack={() => setActiveSection('home')}
+          onBack={() => goBack('vacancies')}
         />
       ) : activeSection === 'vacancies' ? (
         <VacanciesView
@@ -264,25 +351,24 @@ function App() {
           vacancies={vacancies}
           siteSettings={siteSettings}
           onNavigate={(path) => {
-            setActiveSection(path);
-            window.scrollTo(0, 0);
+            navigateTo(path);
           }}
-          onBack={() => setActiveSection('home')}
+          onBack={() => goBack('home')}
         />
       ) : activeSection.startsWith('smile-gallery/') ? (
         <SmileGalleryDetailView
           currentLang={lang}
           itemId={activeSection.split('/')[1]}
           items={smileGallery}
-          onBack={() => setActiveSection('smile-gallery')}
+          onBack={() => goBack('smile-gallery')}
         />
       ) : activeSection === 'smile-gallery' ? (
         <SmileGalleryView
           currentLang={lang}
           items={smileGallery}
           siteSettings={siteSettings}
-          onBack={() => setActiveSection('home')}
-          onNavigate={(path) => { setActiveSection(path); window.scrollTo(0, 0); }}
+          onBack={() => goBack('home')}
+          onNavigate={navigateTo}
         />
       ) : (
         <PublicView
@@ -297,8 +383,7 @@ function App() {
           loading={loading}
           onShowToast={showToast}
           onNavigate={(path) => {
-            setActiveSection(path);
-            window.scrollTo(0, 0);
+            navigateTo(path);
           }}
         />
       )}
@@ -320,6 +405,11 @@ function App() {
           googleMapsUrl={contactInfo?.googleMapsUrl}
           mondaySaturdayOpen={contactInfo?.mondaySaturdayOpen}
           mondaySaturdayClose={contactInfo?.mondaySaturdayClose}
+          mondayFridayOpen={contactInfo?.mondayFridayOpen}
+          mondayFridayClose={contactInfo?.mondayFridayClose}
+          saturdayOpen={contactInfo?.saturdayOpen}
+          saturdayClose={contactInfo?.saturdayClose}
+          saturdayClosed={contactInfo?.saturdayClosed ?? false}
           sundayOpen={contactInfo?.sundayOpen}
           sundayClose={contactInfo?.sundayClose}
           sundayClosed={contactInfo?.sundayClosed ?? true}

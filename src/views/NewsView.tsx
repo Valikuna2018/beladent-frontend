@@ -19,7 +19,7 @@ export const NewsView: React.FC<Props> = ({ currentLang, news, siteSettings, onN
           const body = richTextToPlainText(currentLang === "ka" ? item.textKa : item.textEn);
           return <GlassCard key={item.id} className="news-row" onClick={() => onNavigate(`news/${item.id}`)}>
             <div className="news-thumb">{item.imageUrl ? <img src={getFullImageUrl(item.imageUrl)} alt={currentLang === "ka" ? (item.imageAltKa || title) : (item.imageAltEn || title)} /> : <div className="news-fallback">📰</div>}</div>
-            <div className="news-copy"><h2>{title}</h2><p>{body?.slice(0, 180)}{body?.length > 180 ? "…" : ""}</p><span>{currentLang === "ka" ? "სრულად" : "View more"} <ArrowRight size={17} /></span></div>
+            <div className="news-copy"><h2>{title}</h2><p>{body?.slice(0, 180)}{body?.length > 180 ? "…" : ""}</p><span className="read-more-link">{currentLang === "ka" ? "ვრცლად" : "View more"} <ArrowRight size={17} /></span></div>
           </GlassCard>;
         }) : <div className="news-empty"><Info size={34} />{currentLang === "ka" ? "სიახლეები ჯერ არ არის დამატებული." : "No news has been added yet."}</div>}
       </div>

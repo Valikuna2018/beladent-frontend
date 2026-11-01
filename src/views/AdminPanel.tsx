@@ -184,7 +184,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       setSelectedId(null);
       // Initialize fresh fields based on tab
       if (activeTab === 'services') {
-        setFormFields({ titleKa: '', titleEn: '', slug: '', descriptionKa: '', descriptionEn: '', imageAltKa: '', imageAltEn: '', sortOrder: 0, active: true });
+        setFormFields({ titleKa: '', titleEn: '', slug: '', shortDescriptionKa: '', shortDescriptionEn: '', descriptionKa: '', descriptionEn: '', imageAltKa: '', imageAltEn: '', sortOrder: 0, active: true });
       } else if (activeTab === 'doctors') {
         setFormFields({ firstNameKa: '', firstNameEn: '', lastNameKa: '', lastNameEn: '', specializationKa: '', specializationEn: '', slug: '', descriptionKa: '', descriptionEn: '', imageAltKa: '', imageAltEn: '', sortOrder: 0, active: true });
       } else if (activeTab === 'gallery') {
@@ -212,6 +212,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         formData.append('titleKa', formFields.titleKa || '');
         formData.append('titleEn', formFields.titleEn || '');
         formData.append('slug', formFields.slug || '');
+        formData.append('shortDescriptionKa', formFields.shortDescriptionKa || '');
+        formData.append('shortDescriptionEn', formFields.shortDescriptionEn || '');
         formData.append('descriptionKa', formFields.descriptionKa || '');
         formData.append('descriptionEn', formFields.descriptionEn || '');
         formData.append('imageAltKa', formFields.imageAltKa || '');
@@ -332,8 +334,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           linkedinUrl: formFields.linkedinUrl,
           youtubeUrl: formFields.youtubeUrl,
           googleMapsUrl: formFields.googleMapsUrl,
-          mondaySaturdayOpen: formFields.mondaySaturdayOpen || '10:00',
-          mondaySaturdayClose: formFields.mondaySaturdayClose || '20:00',
+          mondaySaturdayOpen: formFields.mondaySaturdayOpen || formFields.mondayFridayOpen || '10:00',
+          mondaySaturdayClose: formFields.mondaySaturdayClose || formFields.mondayFridayClose || '20:00',
+          mondayFridayOpen: formFields.mondayFridayOpen || formFields.mondaySaturdayOpen || '10:00',
+          mondayFridayClose: formFields.mondayFridayClose || formFields.mondaySaturdayClose || '20:00',
+          saturdayOpen: formFields.saturdayOpen || formFields.mondaySaturdayOpen || '10:00',
+          saturdayClose: formFields.saturdayClose || formFields.mondaySaturdayClose || '20:00',
+          saturdayClosed: formFields.saturdayClosed ?? false,
           sundayOpen: formFields.sundayOpen || '10:00',
           sundayClose: formFields.sundayClose || '18:00',
           sundayClosed: formFields.sundayClosed ?? true,
@@ -1327,14 +1334,27 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
           <div className="form-double-col">
             <div className="form-group">
-              <label className="form-label">{currentLang === 'ka' ? 'ორშაბათი - შაბათი: გახსნა' : 'Monday - Saturday: Opens'}</label>
-              <input type="time" className="glass-input" value={formFields.mondaySaturdayOpen || '10:00'} onChange={(e) => setFormFields({ ...formFields, mondaySaturdayOpen: e.target.value })} required />
+              <label className="form-label">{currentLang === 'ka' ? 'ორშაბათი - პარასკევი: გახსნა' : 'Monday - Friday: Opens'}</label>
+              <input type="time" className="glass-input" value={formFields.mondayFridayOpen || formFields.mondaySaturdayOpen || '10:00'} onChange={(e) => setFormFields({ ...formFields, mondayFridayOpen: e.target.value })} required />
             </div>
             <div className="form-group">
-              <label className="form-label">{currentLang === 'ka' ? 'ორშაბათი - შაბათი: დახურვა' : 'Monday - Saturday: Closes'}</label>
-              <input type="time" className="glass-input" value={formFields.mondaySaturdayClose || '20:00'} onChange={(e) => setFormFields({ ...formFields, mondaySaturdayClose: e.target.value })} required />
+              <label className="form-label">{currentLang === 'ka' ? 'ორშაბათი - პარასკევი: დახურვა' : 'Monday - Friday: Closes'}</label>
+              <input type="time" className="glass-input" value={formFields.mondayFridayClose || formFields.mondaySaturdayClose || '20:00'} onChange={(e) => setFormFields({ ...formFields, mondayFridayClose: e.target.value })} required />
             </div>
           </div>
+
+          <div className="form-group">
+            <label className="checkbox-container-label">
+              <input type="checkbox" className="custom-checkbox-input" checked={formFields.saturdayClosed ?? false} onChange={(e) => setFormFields({ ...formFields, saturdayClosed: e.target.checked })} />
+              <span>{currentLang === 'ka' ? 'შაბათს კლინიკა დაკეტილია' : 'Clinic is closed on Saturday'}</span>
+            </label>
+          </div>
+          {!(formFields.saturdayClosed ?? false) && (
+            <div className="form-double-col">
+              <div className="form-group"><label className="form-label">{currentLang === 'ka' ? 'შაბათი: გახსნა' : 'Saturday: Opens'}</label><input type="time" className="glass-input" value={formFields.saturdayOpen || formFields.mondaySaturdayOpen || '10:00'} onChange={(e) => setFormFields({ ...formFields, saturdayOpen: e.target.value })} required /></div>
+              <div className="form-group"><label className="form-label">{currentLang === 'ka' ? 'შაბათი: დახურვა' : 'Saturday: Closes'}</label><input type="time" className="glass-input" value={formFields.saturdayClose || formFields.mondaySaturdayClose || '20:00'} onChange={(e) => setFormFields({ ...formFields, saturdayClose: e.target.value })} required /></div>
+            </div>
+          )}
 
           <div className="form-group">
             <label className="checkbox-container-label">
@@ -1707,6 +1727,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 required
               />
             </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">{currentLang === 'ka' ? 'მოკლე აღწერა (ქართული)' : 'Short description (Georgian)'}</label>
+            <textarea className="glass-input" rows={3} value={formFields.shortDescriptionKa || ''} onChange={(e) => setFormFields({ ...formFields, shortDescriptionKa: e.target.value })} />
+            <EmojiToolbar onPick={(emoji) => setFormFields((previous: any) => ({ ...previous, shortDescriptionKa: (previous.shortDescriptionKa || '') + emoji }))} />
+          </div>
+          <div className="form-group">
+            <label className="form-label">{currentLang === 'ka' ? 'მოკლე აღწერა (ინგლისური)' : 'Short description (English)'}</label>
+            <textarea className="glass-input" rows={3} value={formFields.shortDescriptionEn || ''} onChange={(e) => setFormFields({ ...formFields, shortDescriptionEn: e.target.value })} />
+            <EmojiToolbar onPick={(emoji) => setFormFields((previous: any) => ({ ...previous, shortDescriptionEn: (previous.shortDescriptionEn || '') + emoji }))} />
           </div>
 
           <div className="form-group">

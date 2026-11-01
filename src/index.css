@@ -172,6 +172,15 @@ a:hover {
   color: var(--accent-cyan);
 }
 
+.read-more-link {
+  transition: color .2s ease, transform .2s ease, opacity .2s ease;
+}
+.read-more-link:hover {
+  color: var(--primary-hover) !important;
+  transform: translateX(4px);
+  opacity: .88;
+}
+
 /* Reusable Glassmorphism Utilities */
 .glass-panel {
   background: var(--card-bg);

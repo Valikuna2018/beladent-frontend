@@ -19,7 +19,7 @@ export const ServicesView: React.FC<Props> = ({ currentLang, services, siteSetti
         {activeServices.length ? activeServices.map((service) => (
           <GlassCard key={service.id} className="listing-card" onClick={() => onNavigate(`service/${service.slug || service.id}`)}>
             <div className="listing-image-wrap">{service.imageUrl ? <img src={getFullImageUrl(service.imageUrl)} alt={currentLang === "ka" ? (service.imageAltKa || service.titleKa) : (service.imageAltEn || service.titleEn)} /> : <div className="listing-fallback">🦷</div>}</div>
-            <div className="listing-body"><h2>{currentLang === "ka" ? service.titleKa : service.titleEn}</h2><p>{richTextToPlainText(currentLang === "ka" ? service.descriptionKa : service.descriptionEn).slice(0, 150)}</p><span><Eye size={16} /> {currentLang === "ka" ? "მეტი" : "View more"}</span></div>
+            <div className="listing-body"><h2>{currentLang === "ka" ? service.titleKa : service.titleEn}</h2><p>{richTextToPlainText(currentLang === "ka" ? (service.shortDescriptionKa || service.descriptionKa) : (service.shortDescriptionEn || service.descriptionEn)).slice(0, 150)}</p><span className="read-more-link"><Eye size={16} /> {currentLang === "ka" ? "ვრცლად" : "View more"}</span></div>
           </GlassCard>
         )) : <div className="empty-list"><Info size={34} />{currentLang === "ka" ? "სერვისები ჯერ არ არის დამატებული." : "No services added yet."}</div>}
       </div>
