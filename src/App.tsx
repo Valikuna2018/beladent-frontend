@@ -211,15 +211,17 @@ function App() {
     const listTitles: Record<string, string> = lang === 'ka'
       ? { services: 'სერვისები', doctors: 'ექიმები', news: 'სიახლეები', vacancies: 'ვაკანსიები', 'smile-gallery': 'ღიმილის გალერეა', about: 'ჩვენ შესახებ', contact: 'კონტაქტი' }
       : { services: 'Services', doctors: 'Doctors', news: 'News', vacancies: 'Vacancies', 'smile-gallery': 'Smile Gallery', about: 'About Us', contact: 'Contact' };
-    const entityTitle = entity && (activeSection.startsWith('doctor/')
+    const customSeoTitle = entity && (lang === 'ka' ? entity.seoTitleKa : entity.seoTitleEn);
+    const entityTitle = customSeoTitle || (entity && (activeSection.startsWith('doctor/')
       ? `${lang === 'ka' ? entity.firstNameKa : entity.firstNameEn} ${lang === 'ka' ? entity.lastNameKa : entity.lastNameEn}`.trim()
-      : (lang === 'ka' ? entity.titleKa : entity.titleEn));
+      : (lang === 'ka' ? entity.titleKa : entity.titleEn)));
     const title = entityTitle ? `${entityTitle} | ${clinic}`
       : activeSection === 'home' ? (lang === 'ka' ? siteSettings?.seoTitleKa : siteSettings?.seoTitleEn) || clinic
       : `${listTitles[activeSection] || clinic} | ${clinic}`;
-    const rawDescription = entity && (activeSection.startsWith('doctor/')
+    const customMetaDescription = entity && (lang === 'ka' ? entity.metaDescriptionKa : entity.metaDescriptionEn);
+    const rawDescription = customMetaDescription || (entity && (activeSection.startsWith('doctor/')
       ? (lang === 'ka' ? entity.specializationKa : entity.specializationEn)
-      : (lang === 'ka' ? (entity.shortDescriptionKa || entity.descriptionKa || entity.textKa) : (entity.shortDescriptionEn || entity.descriptionEn || entity.textEn)));
+      : (lang === 'ka' ? (entity.shortDescriptionKa || entity.descriptionKa || entity.textKa) : (entity.shortDescriptionEn || entity.descriptionEn || entity.textEn))));
     const description = richTextToPlainText(rawDescription || (lang === 'ka' ? siteSettings?.seoDescriptionKa : siteSettings?.seoDescriptionEn) || clinic).slice(0, 160);
     document.title = title;
     const setMeta = (selector: string, attribute: string, value: string) => {

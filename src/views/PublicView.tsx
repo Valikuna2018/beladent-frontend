@@ -301,7 +301,7 @@ export const PublicView: React.FC<PublicViewProps> = ({
         }
         .hero-container { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 20px; position: relative; z-index: 2; }
         .hero-eyebrow { display: none; }
-        .hero-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transform: scale(1.03); transition: opacity .8s ease, transform 4.8s ease; }
+        .hero-slide { position: absolute; inset: -4px; background-size: cover; background-position: center; opacity: 0; transform: scale(1.03); transition: opacity .8s ease, transform 4.8s ease; filter:blur(1.5px); }
         .hero-slide.active { opacity: 1; transform: scale(1); }
         .carousel-arrow { width: 50px; height: 50px; border: 1px solid rgba(255,255,255,.45); border-radius: 50%; display: grid; place-items: center; cursor: pointer; transition: transform .2s, background .2s; z-index: 4; }
         .carousel-arrow:hover { transform: scale(1.08); }
@@ -311,7 +311,7 @@ export const PublicView: React.FC<PublicViewProps> = ({
         .hero-dots { position: absolute; z-index: 4; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; gap: 9px; }
         .hero-dots button { width: 9px; height: 9px; padding: 0; border: 0; border-radius: 50%; background: rgba(255,255,255,.45); cursor: pointer; transition: width .25s, background .25s; }
         .hero-dots button.active { width: 28px; border-radius: 8px; background: white; }
-        .hero-headline { font-size: clamp(2rem,5vw,3.6rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; background: linear-gradient(135deg,#fff 40%,#e0f2fe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-headline { font-size: clamp(2rem,5vw,3.6rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; color:#fff; background:none; -webkit-text-fill-color:#fff; }
         .hero-headline.georgian { line-height: 1.35; padding: 0.08em 0 0.22em; overflow: visible; letter-spacing: -0.015em; font-weight: 900; -webkit-text-stroke: 0.45px rgba(255,255,255,.92); }
         .hero-subtext { font-size: clamp(1rem,2.5vw,1.2rem); color: #18150f; max-width: 720px; line-height: 1.65; font-weight:700; text-shadow:0 1px 10px rgba(255,255,255,.35); }
         .hero-subtext.georgian { font-weight: 800; -webkit-text-stroke: 0.1px #18150f; }
@@ -334,13 +334,13 @@ export const PublicView: React.FC<PublicViewProps> = ({
         .card-body { padding: 22px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
         .card-title { font-size: 1.2rem; color: var(--text-dark); }
         .card-description-snippet { font-size: 0.92rem; line-height: 1.5; color: var(--text-muted); }
-        .about-full-section { background: linear-gradient(135deg,#fffaf0 0%,#f2e8d2 100%); padding: 90px 24px; }
+        .about-full-section { background:#fff; padding: 90px 24px; }
         .about-inner { max-width: 1420px; margin: 0 auto; display: grid; grid-template-columns: minmax(460px,1.08fr) minmax(430px,.92fr); gap: clamp(54px,6vw,96px); align-items: center; }
         .about-visual-panel { display:flex; justify-content:center; }
         .about-image-box { width:100%; max-width:680px; aspect-ratio:4/3; min-height:520px; border-radius:30px; overflow:hidden; background:var(--primary-light); box-shadow:0 28px 65px rgba(78,61,20,.2); }
         .about-image-box .about-image { width:100%; height:100%; min-height:520px; object-fit:cover; display:block; }
         .about-text-panel .content-eyebrow { font-size:1.05rem; letter-spacing:.08em; }
-        .about-text-panel .about-heading { font-size:clamp(2.7rem,4.5vw,4.6rem); line-height:1.15; margin:14px 0 28px; }
+        .about-text-panel .about-heading { font-size:clamp(2.1rem,3vw,3.15rem); line-height:1.2; margin:14px 0 24px; color:var(--text-dark); background:none; -webkit-text-fill-color:var(--text-dark); }
         .about-text-panel .about-body-text { font-size:clamp(1.05rem,1.25vw,1.22rem); line-height:1.9; }
         @media (max-width: 900px) { .about-inner { grid-template-columns: 1fr; gap: 40px; } .about-image-box,.about-image-box .about-image { min-height:360px; } }
         .about-visual-panel { display: flex; justify-content: center; }

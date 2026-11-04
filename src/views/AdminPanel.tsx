@@ -184,9 +184,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       setSelectedId(null);
       // Initialize fresh fields based on tab
       if (activeTab === 'services') {
-        setFormFields({ titleKa: '', titleEn: '', slug: '', shortDescriptionKa: '', shortDescriptionEn: '', descriptionKa: '', descriptionEn: '', imageAltKa: '', imageAltEn: '', sortOrder: 0, active: true });
+        setFormFields({ titleKa: '', titleEn: '', slug: '', shortDescriptionKa: '', shortDescriptionEn: '', descriptionKa: '', descriptionEn: '', seoTitleKa: '', seoTitleEn: '', metaDescriptionKa: '', metaDescriptionEn: '', imageAltKa: '', imageAltEn: '', sortOrder: 0, active: true });
       } else if (activeTab === 'doctors') {
-        setFormFields({ firstNameKa: '', firstNameEn: '', lastNameKa: '', lastNameEn: '', specializationKa: '', specializationEn: '', slug: '', descriptionKa: '', descriptionEn: '', imageAltKa: '', imageAltEn: '', sortOrder: 0, active: true });
+        setFormFields({ firstNameKa: '', firstNameEn: '', lastNameKa: '', lastNameEn: '', specializationKa: '', specializationEn: '', slug: '', descriptionKa: '', descriptionEn: '', seoTitleKa: '', seoTitleEn: '', metaDescriptionKa: '', metaDescriptionEn: '', imageAltKa: '', imageAltEn: '', sortOrder: 0, active: true });
       } else if (activeTab === 'gallery') {
         setFormFields({ titleKa: '', titleEn: '', imageAltKa: '', imageAltEn: '', sortOrder: 0, active: true });
       } else if (activeTab === 'partners') {
@@ -216,6 +216,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         formData.append('shortDescriptionEn', formFields.shortDescriptionEn || '');
         formData.append('descriptionKa', formFields.descriptionKa || '');
         formData.append('descriptionEn', formFields.descriptionEn || '');
+        formData.append('seoTitleKa', formFields.seoTitleKa || '');
+        formData.append('seoTitleEn', formFields.seoTitleEn || '');
+        formData.append('metaDescriptionKa', formFields.metaDescriptionKa || '');
+        formData.append('metaDescriptionEn', formFields.metaDescriptionEn || '');
         formData.append('imageAltKa', formFields.imageAltKa || '');
         formData.append('imageAltEn', formFields.imageAltEn || '');
         formData.append('sortOrder', String(formFields.sortOrder || 0));
@@ -238,6 +242,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         formData.append('slug', formFields.slug || '');
         formData.append('descriptionKa', formFields.descriptionKa || '');
         formData.append('descriptionEn', formFields.descriptionEn || '');
+        formData.append('seoTitleKa', formFields.seoTitleKa || '');
+        formData.append('seoTitleEn', formFields.seoTitleEn || '');
+        formData.append('metaDescriptionKa', formFields.metaDescriptionKa || '');
+        formData.append('metaDescriptionEn', formFields.metaDescriptionEn || '');
         formData.append('imageAltKa', formFields.imageAltKa || '');
         formData.append('imageAltEn', formFields.imageAltEn || '');
         formData.append('sortOrder', String(formFields.sortOrder || 0));
@@ -1639,6 +1647,23 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     );
   }
 
+  function renderEntitySeoFields() {
+    return (
+      <div className="seo-editor-card">
+        <strong>{currentLang === 'ka' ? 'ამ გვერდის SEO პარამეტრები' : 'SEO settings for this page'}</strong>
+        <p>{currentLang === 'ka' ? 'ეს ტექსტები გამოჩნდება Google-ის შედეგსა და ბრაუზერის ჩანართში.' : 'These texts appear in search results and the browser tab.'}</p>
+        <div className="form-double-col" style={{ marginTop: 14 }}>
+          <div className="form-group"><label className="form-label">SEO Title — ქართული</label><input className="glass-input" maxLength={70} value={formFields.seoTitleKa || ''} onChange={(e) => setFormFields({ ...formFields, seoTitleKa: e.target.value })} /></div>
+          <div className="form-group"><label className="form-label">SEO Title — English</label><input className="glass-input" maxLength={70} value={formFields.seoTitleEn || ''} onChange={(e) => setFormFields({ ...formFields, seoTitleEn: e.target.value })} /></div>
+        </div>
+        <div className="form-double-col">
+          <div className="form-group"><label className="form-label">Meta Description — ქართული</label><textarea className="glass-input" rows={3} maxLength={170} value={formFields.metaDescriptionKa || ''} onChange={(e) => setFormFields({ ...formFields, metaDescriptionKa: e.target.value })} /></div>
+          <div className="form-group"><label className="form-label">Meta Description — English</label><textarea className="glass-input" rows={3} maxLength={170} value={formFields.metaDescriptionEn || ''} onChange={(e) => setFormFields({ ...formFields, metaDescriptionEn: e.target.value })} /></div>
+        </div>
+      </div>
+    );
+  }
+
   function renderModalFormFields() {
     if (activeTab === 'news' || activeTab === 'smile-gallery') {
       return (
@@ -1756,6 +1781,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             <label className="form-label">{t.fieldDescEn}</label>
             <RichTextEditor value={formFields.descriptionEn || ''} onChange={(value) => setFormFields({ ...formFields, descriptionEn: value })} />
           </div>
+
+          {renderEntitySeoFields()}
 
           <div className="form-group">
             <label className="form-label">{t.uploadImage}</label>
@@ -1898,6 +1925,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             <RichTextEditor value={formFields.descriptionEn || ''} onChange={(value) => setFormFields({ ...formFields, descriptionEn: value })} />
           </div>
 
+          {renderEntitySeoFields()}
+
           <div className="form-group">
             <label className="form-label">{t.uploadImage}</label>
             <label className="file-upload-zone">
@@ -2011,12 +2040,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           <div className="form-double-col">
             <div className="form-group">
               <label className="form-label">კომპანიის სახელი — ქართული</label>
-              <input type="text" className="glass-input" value={formFields.nameKa || formFields.name || ''}
+              <input type="text" className="glass-input" value={formFields.nameKa ?? ''}
                 onChange={(e) => setFormFields({ ...formFields, nameKa: e.target.value })} />
             </div>
             <div className="form-group">
               <label className="form-label">Company name — English</label>
-              <input type="text" className="glass-input" value={formFields.nameEn || formFields.name || ''}
+              <input type="text" className="glass-input" value={formFields.nameEn ?? ''}
                 onChange={(e) => setFormFields({ ...formFields, nameEn: e.target.value })} />
             </div>
           </div>
