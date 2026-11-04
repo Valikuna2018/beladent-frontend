@@ -43,16 +43,15 @@ export const DoctorDetailView: React.FC<DoctorDetailViewProps> = ({ currentLang,
         </button>
       </div>
 
-      <div className="detail-content-wrapper glass-panel doctor-profile">
-        <div className="doctor-profile-header">
-          <div className="doctor-avatar-large">
+      <div className="doctor-detail-layout">
+          <div className="doctor-avatar-large doctor-photo-panel">
             {doctor.imageUrl ? (
               <img src={getFullImageUrl(doctor.imageUrl)} alt={currentLang === 'ka' ? (doctor.imageAltKa || name) : (doctor.imageAltEn || name)} />
             ) : (
               <Stethoscope size={64} className="doctor-placeholder-icon" />
             )}
           </div>
-          <div className="doctor-info-block">
+          <article className="doctor-info-block glass-panel">
             <h1 className="detail-title doctor-name">{name}</h1>
             <div className="doctor-spec-tag">{spec}</div>
             <div className="doctor-socials mt-3">
@@ -67,17 +66,15 @@ export const DoctorDetailView: React.FC<DoctorDetailViewProps> = ({ currentLang,
                 </a>
               )}
             </div>
-          </div>
-        </div>
-        
-          <RichTextContent className="detail-body-text" html={bio} />
+            <RichTextContent className="detail-body-text" html={bio} />
+          </article>
       </div>
 
       <style>{`
         .detail-page-container {
           min-height: 100vh;
           padding: 120px 24px 60px;
-          max-width: 900px;
+          max-width: 1540px;
           margin: 0 auto;
         }
 
@@ -105,43 +102,44 @@ export const DoctorDetailView: React.FC<DoctorDetailViewProps> = ({ currentLang,
           transform: translateX(-4px);
         }
 
-        .detail-content-wrapper {
-          padding: 40px;
-          border-radius: 16px;
-        }
-
-        .doctor-profile-header {
-          display: flex;
-          gap: 32px;
-          align-items: flex-start;
-          flex-wrap: wrap;
+        .doctor-detail-layout {
+          display:grid;
+          grid-template-columns:minmax(330px, 500px) minmax(0, 1fr);
+          gap:36px;
+          align-items:start;
         }
 
         .doctor-avatar-large {
-          width: 200px;
-          height: 200px;
-          border-radius: 20px;
+          width:100%;
+          min-height:680px;
+          height:min(72vh,820px);
+          border-radius:30px;
           overflow: hidden;
           background: var(--input-bg);
-          border: 4px solid var(--primary-light);
+          border:1px solid var(--card-border);
+          box-shadow:0 24px 55px rgba(70,55,18,.16);
           display: flex;
           align-items: center;
           justify-content: center;
-          flex-shrink: 0;
         }
 
         .doctor-avatar-large img {
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          object-fit:cover;
+          object-position:center top;
         }
 
         .doctor-info-block {
-          flex: 1;
+          min-height:680px;
+          padding:clamp(34px,5vw,68px);
+          border-radius:30px;
         }
 
         .doctor-name {
-          margin-bottom: 12px;
+          margin-bottom:18px;
+          font-size:clamp(2.5rem,4vw,4.5rem);
+          line-height:1.1;
         }
 
         .doctor-spec-tag {
@@ -152,7 +150,7 @@ export const DoctorDetailView: React.FC<DoctorDetailViewProps> = ({ currentLang,
           border-radius: 99px;
           font-family: var(--font-heading);
           font-weight: 600;
-          font-size: 0.95rem;
+          font-size:1rem;
         }
 
         .doc-social-link {
@@ -175,13 +173,26 @@ export const DoctorDetailView: React.FC<DoctorDetailViewProps> = ({ currentLang,
         }
 
         .detail-body-text {
-          font-size: 1.1rem;
-          line-height: 1.8;
+          margin-top:40px;
+          font-size:clamp(1.02rem,1.25vw,1.2rem);
+          line-height:1.9;
           color: var(--text-dark);
         }
+        .detail-body-text :is(h2,h3,h4) { margin:34px 0 14px; color:var(--text-dark); -webkit-text-fill-color:initial; background:none; font-size:clamp(1.25rem,1.8vw,1.65rem); }
+        .detail-body-text p { margin:0 0 20px; color:var(--text-muted); }
+        .detail-body-text :is(ul,ol) { margin:12px 0 24px 24px; color:var(--text-muted); }
+        .detail-body-text li { margin:8px 0; padding-left:6px; }
+        .detail-body-text strong { color:var(--text-dark); font-weight:800; }
 
         .mt-3 {
           margin-top: 24px;
+        }
+        @media (max-width: 980px) {
+          .detail-page-container { padding:100px 16px 44px; }
+          .doctor-detail-layout { grid-template-columns:1fr; gap:22px; }
+          .doctor-avatar-large { min-height:0; height:auto; aspect-ratio:4/5; max-height:680px; }
+          .doctor-info-block { min-height:0; padding:28px 22px; }
+          .detail-body-text { margin-top:28px; }
         }
       `}</style>
     </div>

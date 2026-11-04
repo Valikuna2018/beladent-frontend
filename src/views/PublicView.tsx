@@ -215,8 +215,10 @@ export const PublicView: React.FC<PublicViewProps> = ({
             <div className="partners-track" ref={partnersTrackRef}>
               {partners.filter((partner) => partner.active !== false).map((partner) => (
                 <div className="partner-card" key={partner.id}>
-                  <img src={getFullImageUrl(partner.imageUrl)} alt={partner.name || "Partner company"} />
-                  {partner.name?.trim() && <span>{partner.name}</span>}
+                  {(() => {
+                    const partnerName = currentLang === "ka" ? (partner.nameKa || partner.name) : (partner.nameEn || partner.name);
+                    return <><img src={getFullImageUrl(partner.imageUrl)} alt={partnerName || "Partner company"} />{partnerName?.trim() && <span>{partnerName}</span>}</>;
+                  })()}
                 </div>
               ))}
             </div>
@@ -311,8 +313,8 @@ export const PublicView: React.FC<PublicViewProps> = ({
         .hero-dots button.active { width: 28px; border-radius: 8px; background: white; }
         .hero-headline { font-size: clamp(2rem,5vw,3.6rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; background: linear-gradient(135deg,#fff 40%,#e0f2fe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero-headline.georgian { line-height: 1.35; padding: 0.08em 0 0.22em; overflow: visible; letter-spacing: -0.015em; font-weight: 900; -webkit-text-stroke: 0.45px rgba(255,255,255,.92); }
-        .hero-subtext { font-size: clamp(1rem,2.5vw,1.2rem); color: #94a3b8; max-width: 620px; line-height: 1.6; }
-        .hero-subtext.georgian { font-weight: 800; -webkit-text-stroke: 0.15px #94a3b8; }
+        .hero-subtext { font-size: clamp(1rem,2.5vw,1.2rem); color: #18150f; max-width: 720px; line-height: 1.65; font-weight:700; text-shadow:0 1px 10px rgba(255,255,255,.35); }
+        .hero-subtext.georgian { font-weight: 800; -webkit-text-stroke: 0.1px #18150f; }
         .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
         .btn-lg { padding: 14px 32px; font-size: 1.05rem; border-radius: 14px; }
         .public-section { max-width: 1200px; margin: 0 auto; padding: 90px 24px; }
@@ -333,10 +335,15 @@ export const PublicView: React.FC<PublicViewProps> = ({
         .card-title { font-size: 1.2rem; color: var(--text-dark); }
         .card-description-snippet { font-size: 0.92rem; line-height: 1.5; color: var(--text-muted); }
         .about-full-section { background: linear-gradient(135deg,#fffaf0 0%,#f2e8d2 100%); padding: 90px 24px; }
-        .about-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center; }
-        @media (max-width: 900px) { .about-inner { grid-template-columns: 1fr; gap: 40px; } }
+        .about-inner { max-width: 1420px; margin: 0 auto; display: grid; grid-template-columns: minmax(460px,1.08fr) minmax(430px,.92fr); gap: clamp(54px,6vw,96px); align-items: center; }
+        .about-visual-panel { display:flex; justify-content:center; }
+        .about-image-box { width:100%; max-width:680px; aspect-ratio:4/3; min-height:520px; border-radius:30px; overflow:hidden; background:var(--primary-light); box-shadow:0 28px 65px rgba(78,61,20,.2); }
+        .about-image-box .about-image { width:100%; height:100%; min-height:520px; object-fit:cover; display:block; }
+        .about-text-panel .content-eyebrow { font-size:1.05rem; letter-spacing:.08em; }
+        .about-text-panel .about-heading { font-size:clamp(2.7rem,4.5vw,4.6rem); line-height:1.15; margin:14px 0 28px; }
+        .about-text-panel .about-body-text { font-size:clamp(1.05rem,1.25vw,1.22rem); line-height:1.9; }
+        @media (max-width: 900px) { .about-inner { grid-template-columns: 1fr; gap: 40px; } .about-image-box,.about-image-box .about-image { min-height:360px; } }
         .about-visual-panel { display: flex; justify-content: center; }
-        .about-image-box { width: 100%; max-width: 450px; aspect-ratio: 4 / 3; border-radius: 24px; overflow: hidden; background: var(--primary-light); box-shadow: 0 20px 50px rgba(126,101,31,0.20); }
         .about-image { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
         .about-stat-box { width: 100%; max-width: 360px; padding: 60px 40px; border-radius: 24px; background: linear-gradient(135deg,var(--primary) 0%,#665219 100%); color: white; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; box-shadow: 0 20px 50px rgba(126,101,31,0.24); }
         .about-big-num { font-family: var(--font-heading); font-weight: 800; font-size: 5rem; line-height: 1; }
@@ -344,8 +351,7 @@ export const PublicView: React.FC<PublicViewProps> = ({
         .about-cyan-tag { font-size: 0.9rem; color: var(--accent-cyan); font-weight: 500; letter-spacing: 0.04em; }
         .about-text-panel { display: flex; flex-direction: column; gap: 18px; }
         .content-eyebrow { font-family: var(--font-heading); font-weight: 600; font-size: 0.88rem; letter-spacing: 0.05em; color: var(--primary); }
-        .about-heading { font-size: clamp(1.8rem,3vw,2.4rem); }
-        .about-body-text { font-size: 1rem; line-height: 1.7; color: var(--text-muted); }
+        .about-body-text { color: var(--text-muted); }
         .doctors-carousel { position: relative; padding: 0 62px; }
         .partners-section { padding-top:54px; padding-bottom:42px; }
         .partners-section .section-header { margin-bottom:32px; }

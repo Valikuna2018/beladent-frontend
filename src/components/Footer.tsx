@@ -207,7 +207,7 @@ export const Footer: React.FC<FooterProps> = ({
               <Clock size={16} />
               <span>{mondayFridayLabel}</span>
             </div>
-            <div className="hours-row">
+            <div className="hours-item">
               <Clock size={18} />
               <span>{saturdayLabel}</span>
             </div>
@@ -400,12 +400,15 @@ export const Footer: React.FC<FooterProps> = ({
 
         .contact-item-link,
         .hours-item,
+        .hours-row,
         .contact-item-text {
           display: flex;
           align-items: center;
           gap: 10px;
           font-size: 0.9rem;
           color: var(--text-muted);
+          font-family: var(--font-body);
+          font-weight: 600;
         }
 
         .contact-item-link {

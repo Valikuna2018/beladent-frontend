@@ -190,7 +190,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       } else if (activeTab === 'gallery') {
         setFormFields({ titleKa: '', titleEn: '', imageAltKa: '', imageAltEn: '', sortOrder: 0, active: true });
       } else if (activeTab === 'partners') {
-        setFormFields({ name: '', sortOrder: 0, active: true });
+        setFormFields({ nameKa: '', nameEn: '', sortOrder: 0, active: true });
       } else if (activeTab === 'vacancies') {
         setFormFields({ titleKa: '', titleEn: '', positionKa: '', positionEn: '', descriptionKa: '', descriptionEn: '', active: true });
       } else if (activeTab === 'news') {
@@ -266,7 +266,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         }
       } else if (activeTab === 'partners') {
         const formData = new FormData();
-        formData.append('name', formFields.name || '');
+        formData.append('nameKa', formFields.nameKa || formFields.name || '');
+        formData.append('nameEn', formFields.nameEn || formFields.name || '');
+        formData.append('name', formFields.nameKa || formFields.nameEn || formFields.name || '');
         formData.append('sortOrder', String(formFields.sortOrder || 0));
         formData.append('active', String(formFields.active ?? true));
         if (selectedFile) formData.append('file', selectedFile);
@@ -1176,7 +1178,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             {activeTab === 'doctors' ? (
               currentLang === 'ka' ? `${item.firstNameKa} ${item.lastNameKa}` : `${item.firstNameEn} ${item.lastNameEn}`
             ) : activeTab === 'partners' ? (
-              item.name || (currentLang === 'ka' ? 'სახელის გარეშე' : 'No name')
+              (currentLang === 'ka' ? (item.nameKa || item.name) : (item.nameEn || item.name)) || (currentLang === 'ka' ? 'სახელის გარეშე' : 'No name')
             ) : (
               currentLang === 'ka' ? item.titleKa : item.titleEn
             )}
@@ -1458,6 +1460,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 required
               />
             </div>
+          </div>
+
+          <div className="seo-editor-card">
+            <strong>{currentLang === 'ka' ? 'Google-ის ძიების ოპტიმიზაცია (SEO)' : 'Search engine optimization (SEO)'}</strong>
+            <p>{currentLang === 'ka' ? 'SEO Title ჩანს ბრაუზერის ჩანართსა და Google-ის სათაურში; Meta Description — შედეგის აღწერაში.' : 'SEO Title appears in the browser tab and search title; Meta Description appears in the search result summary.'}</p>
           </div>
 
           <div className="form-double-col">
@@ -2001,14 +2008,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     if (activeTab === 'partners') {
       return (
         <>
-          <div className="form-group">
-            <label className="form-label">{currentLang === 'ka' ? 'კომპანიის სახელი (არასავალდებულო)' : 'Company name (optional)'}</label>
-            <input
-              type="text"
-              className="glass-input"
-              value={formFields.name || ''}
-              onChange={(e) => setFormFields({ ...formFields, name: e.target.value })}
-            />
+          <div className="form-double-col">
+            <div className="form-group">
+              <label className="form-label">კომპანიის სახელი — ქართული</label>
+              <input type="text" className="glass-input" value={formFields.nameKa || formFields.name || ''}
+                onChange={(e) => setFormFields({ ...formFields, nameKa: e.target.value })} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Company name — English</label>
+              <input type="text" className="glass-input" value={formFields.nameEn || formFields.name || ''}
+                onChange={(e) => setFormFields({ ...formFields, nameEn: e.target.value })} />
+            </div>
           </div>
           <div className="form-group">
             <label className="form-label">{t.fieldSortOrder}</label>
